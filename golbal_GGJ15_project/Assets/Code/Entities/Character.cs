@@ -2,10 +2,7 @@
 using System.Collections;
 using GamepadInput;
 
-public class Character : MonoBehaviour {
-
-    public bool enableScreenShake = true;
-    public bool enableScreenFlash = false;
+public class Character : Entity {
 
     [HideInInspector]
     private enum Facing
@@ -16,53 +13,28 @@ public class Character : MonoBehaviour {
         DOWN
     }
     private Facing Direction;
-
-    private Animator top_animator, bottom_animator;
-    private GameObject mainCamera;
-
-    private ColorFlash colorFlash;
-
+    
     private GamePad.Index gamePadIndex;
-    private Vector2 move, maxVelocity, maxKnockback;
-    private int health, maxHealth;
-    private float damageMultiplier;
-    private bool isDead;
-    private bool dontMove;
+    private Vector2 move, maxVelocity;
 
-	void Start () 
+	private void Start () 
     {
-        top_animator = Global.getChildGameObject(gameObject, "Animation_top").GetComponent<Animator>();
-        bottom_animator = Global.getChildGameObject(gameObject, "Animation_bottom").GetComponent<Animator>();
-
-        mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
-        colorFlash = GetComponent<ColorFlash>();
-
         gamePadIndex = GamePad.Index.One;
         Direction = Facing.RIGHT;
         move = Vector2.zero;
         maxVelocity = new Vector2(5, 3);
-        maxKnockback = new Vector2(700, 2 );
-        damageMultiplier = 1f;
-        dontMove = false;
-
-        maxHealth = 10;
-        health = maxHealth;
-        isDead = false;
-
 	}
 	
-    void FixedUpdate()
+    private void FixedUpdate()
     {
-        if(!dontMove)
+        if(!CantMove)
             FixedMovement();
     }
 
-	void Update () 
+	private void Update () 
     {
-        Movement();
-
         if (GamePad.GetKeyboardKeyDown(KeyCode.LeftShift))
-            KnockBack(new Vector2(0, 0), damageMultiplier);
+            KnockBack(new Vector2(0, 0), 1);
 
         if (GamePad.GetKeyboardKeyDown(KeyCode.Space))
             Dash();
@@ -70,8 +42,7 @@ public class Character : MonoBehaviour {
 
     private void FixedMovement()
     {
-        if (dontMove)
-            dontMove = false;
+        if (CantMove) { CantMove = false; }
 
         move = GamePad.GetAxis(GamePad.Axis.LeftStick, gamePadIndex);
 
@@ -85,8 +56,6 @@ public class Character : MonoBehaviour {
         else if (GamePad.GetKeyboardKey(KeyCode.DownArrow))
             move = new Vector2(move.x, -1);
 
-        SetAnimation("hSpeed", Mathf.Abs(move.x));
-        SetAnimation("vSpeed", Mathf.Abs(move.y));
         rigidbody2D.velocity = new Vector2(move.x * maxVelocity.x, move.y * maxVelocity.x);
 
         if (move.x > 0 && Direction == Facing.LEFT)
@@ -95,47 +64,11 @@ public class Character : MonoBehaviour {
             Flip();
     }
 
-    private void Movement()
-    {
-
-    }
-
     private void Dash()
     {
-        dontMove = true;
+        CantMove = true;
         Invoke("FixedMovement", .075f);
         gameObject.rigidbody2D.AddForce(move.normalized * maxVelocity.x * 75);
-
-        if(enableScreenFlash)
-            mainCamera.GetComponent<ScreenFlash>().Flash(.05f);
-
-    }
-
-    private void Damage(GameObject source, int damage, float multiplier)
-    {
-        if(!isDead)
-        {
-            health -= Mathf.RoundToInt(damage * multiplier);
-            KnockBack(source.transform.position, multiplier);
-        }
-
-        if (health <= 0)
-            isDead = true;
-    }
-
-    private void KnockBack(Vector3 source, float multiplier)
-    {
-        Vector2 hitDirection = gameObject.transform.position - source;
-        hitDirection.Normalize();
-
-        dontMove = true;
-        Invoke("FixedMovement", .1f);
-        gameObject.rigidbody2D.AddForce(hitDirection * maxKnockback.x * multiplier);
-
-        if(enableScreenShake)
-            iTween.PunchPosition(mainCamera, -(hitDirection * maxKnockback.y * multiplier), .35f);
-
-        colorFlash.FlashToColor(new Color(1, 1, 1, 500), .1f, .1f);
     }
 
     private void Flip()
@@ -149,25 +82,5 @@ public class Character : MonoBehaviour {
         playerScale.x *= -1;
         transform.localScale = playerScale;
     }
-
-#region SET ANIMATION STUFF
-
-    private void SetAnimation(string name, int value)
-    {
-        top_animator.SetInteger(name, value);
-        bottom_animator.SetInteger(name, value);
-    }
-    private void SetAnimation(string name, float value)
-    {
-        top_animator.SetFloat(name, value);
-        bottom_animator.SetFloat(name, value);
-    }
-    private void SetAnimation(string name, bool value)
-    {
-        top_animator.SetBool(name, value);
-        bottom_animator.SetBool(name, value);
-    }
-
-#endregion
     
 }
