@@ -15,6 +15,10 @@ public class Entity : MonoBehaviour {
     private ColorFlash colorFlash;
 
     //public methods
+    public void SetMaxHealth(int hp) {
+        maxHealth = hp;
+    }
+    
     public void Damage(int damage) {
         health -= damage;
         if (health <= 0) {
