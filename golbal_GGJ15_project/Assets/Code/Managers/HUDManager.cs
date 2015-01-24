@@ -41,7 +41,7 @@ public class HUDManager : MonoBehaviour
             if (_characterPortraits[i].GetComponent<Image>() != null)
             {
                 _characterPortraits[i].GetComponent<Image>().transform.parent = _canvas.transform;
-                _characterPortraits[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites/Entities/Players/portrait");
+                _characterPortraits[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites/Entities/Players/red");
 
                 // GAMEJAM MAGIC CODE
                 if (_characterPortraits.Count == 1)
@@ -53,7 +53,8 @@ public class HUDManager : MonoBehaviour
                 if (_characterPortraits.Count == 4)
                     _characterPortraits[i].GetComponent<Image>().transform.position = new Vector3((190 - (128 * i)) + (256 * i), 64, 0);
 
-
+                //_characterPortraits[i].GetComponentInChildren<Text>().transform.position = new Vector3(0, 96, 0);
+                _characterPortraits[i].GetComponentInChildren<Text>().text = "100%";
             }
         }
     }
