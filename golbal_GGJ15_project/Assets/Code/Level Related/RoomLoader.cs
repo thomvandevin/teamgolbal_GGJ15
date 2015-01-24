@@ -9,15 +9,20 @@ public class RoomLoader : MonoBehaviour {
     public void Initialize()
     {
         roomPrefabs = new List<GameObject>();
+        int roomNumber = 0;
 
-        for (int i = 0; i < i + 1; i++)
+        while (true)
         {
-            string loadingPath = "Prefabs/Rooms/Prefab_Room" + 0;
+            string loadingPath = "Prefabs/Levels/Prefab_Room" + roomNumber.ToString();
 
-            if (Resources.Load(loadingPath) != null)
-            {
-                roomPrefabs.Add(Resources.Load(loadingPath) as GameObject);
-            }
+            GameObject newPrefab = Resources.Load(loadingPath) as GameObject;
+
+            if (newPrefab != null)
+                roomPrefabs.Add(newPrefab);
+            else
+                break;
+
+            roomNumber++;
         }
     }
 
@@ -25,6 +30,13 @@ public class RoomLoader : MonoBehaviour {
     {
         int randomNumber = Random.Range(0, roomPrefabs.Count);
 
+        Debug.Log(roomPrefabs.Count);
+
         return roomPrefabs[randomNumber];
+    }
+
+    public GameObject GetEndRoom()
+    {
+        return Resources.Load("Prefabs/Levels/Prefab_FinalRoom") as GameObject;
     }
 }
