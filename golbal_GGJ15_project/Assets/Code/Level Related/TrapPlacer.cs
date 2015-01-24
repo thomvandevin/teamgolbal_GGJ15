@@ -13,12 +13,19 @@ public class TrapPlacer : MonoBehaviour {
         trapPrefab = Resources.Load("Prefabs/Entities/r_trap") as GameObject;
     }
 
-    public void InstantiateEnemies(GameObject levelPrefab)
+    public void InstantiateTraps(GameObject levelPrefab)
     {
-        GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("trapSpawner");
+        List<GameObject> spawnPoints = new List<GameObject>();
+
+        foreach (Transform child in levelPrefab.transform)
+        {
+            if (child.tag == "trapSpawner")
+                spawnPoints.Add(child.gameObject);
+        }
+
         List<GameObject> trapList = new List<GameObject>();
 
-        for (int i = 0; i < spawnPoints.Length; i++)
+        for (int i = 0; i < spawnPoints.Count; i++)
         {
             GameObject newTrap = Instantiate(trapPrefab, spawnPoints[i].transform.position, Quaternion.identity) as GameObject;
             trapList.Add(newTrap);

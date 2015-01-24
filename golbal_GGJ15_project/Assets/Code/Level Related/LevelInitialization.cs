@@ -14,11 +14,11 @@ public class LevelInitialization : MonoBehaviour {
         debuffManager = new DebuffManager();
         debuffManager.Initialize();
 
-        levelData = new LevelData();
+        levelData = gameObject.AddComponent<LevelData>();        
         levelData.Initialize(debuffManager);
 
-        playerList = new List<GameObject>();
-        InitializePlayers();
+        //playerList = new List<GameObject>();
+        //InitializePlayers();
     }
 
     void InitializePlayers()
