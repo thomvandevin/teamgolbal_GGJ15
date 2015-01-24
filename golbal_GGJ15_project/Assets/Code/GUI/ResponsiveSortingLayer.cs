@@ -4,6 +4,8 @@ using System.Collections;
 public class ResponsiveSortingLayer : MonoBehaviour {
 
     //public fields
+    public int SortingLayer;
+    public bool OverrideLayer = false;
 
     //private fields
     private SpriteRenderer spriteRenderer;
@@ -14,13 +16,20 @@ public class ResponsiveSortingLayer : MonoBehaviour {
     //private methods
     private void Awake() {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        sortingY = spriteRenderer.bounds.min.y * 100;
-        spriteRenderer.sortingOrder = Mathf.RoundToInt(sortingY) * -1;
+        spriteRenderer.sortingOrder = HandleSorting();
+    }
+
+    private int HandleSorting() {
+        if (!OverrideLayer) {
+            sortingY = spriteRenderer.bounds.min.y * 100;
+            SortingLayer = Mathf.RoundToInt(sortingY) * -1;
+        }
+
+        return SortingLayer;
     }
 
     private void Update() {
-        sortingY = spriteRenderer.bounds.min.y * 100;
-        spriteRenderer.sortingOrder = Mathf.RoundToInt(sortingY) * -1;
+        spriteRenderer.sortingOrder = HandleSorting();
     }
 
 }

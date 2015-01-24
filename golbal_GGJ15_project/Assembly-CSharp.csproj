@@ -49,6 +49,7 @@
      <Compile Include="Assets\Code\Core\GamePad.cs" />
      <Compile Include="Assets\Code\Core\iTween.cs" />
      <Compile Include="Assets\Code\Core\iTweenExtensions.cs" />
+     <Compile Include="Assets\Code\DebuffManager.cs" />
      <Compile Include="Assets\Code\Entities\Character.cs" />
      <Compile Include="Assets\Code\Entities\Enemy.cs" />
      <Compile Include="Assets\Code\Entities\EnemyBehaviour.cs" />
@@ -58,10 +59,12 @@
      <Compile Include="Assets\Code\GUI\ResponsiveSortingLayer.cs" />
      <Compile Include="Assets\Code\GUI\ScreenFlash.cs" />
      <Compile Include="Assets\Code\GUI\SortingLayerController.cs" />
+     <Compile Include="Assets\Code\Level Related\EnemyPlacer.cs" />
      <Compile Include="Assets\Code\Level Related\LevelData.cs" />
      <Compile Include="Assets\Code\Level Related\LevelInitialization.cs" />
      <Compile Include="Assets\Code\Level Related\MissionCreater.cs" />
      <Compile Include="Assets\Code\Level Related\RoomLoader.cs" />
+     <Compile Include="Assets\Code\Level Related\TrapPlacer.cs" />
      <Compile Include="Assets\Code\Managers\EnemyContainer.cs" />
      <Compile Include="Assets\Code\Managers\EnemyController.cs" />
      <Compile Include="Assets\Code\Objects\ObjectController.cs" />
