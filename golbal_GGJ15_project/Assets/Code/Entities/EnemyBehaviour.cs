@@ -9,10 +9,20 @@ public enum EnemyType {
 public class EnemyBehaviour : Entity {
 
 	//public fields
-
     public EnemyType type;
-	
+
+    [HideInInspector]
+    public Transform Target;
+
 	//private fields
+    private Animator animator;
+
+    private enum AnimationState {
+        Walk,
+        Run,
+        Idle,
+        Attack
+    }
 	
 	//public methods
 	
@@ -20,12 +30,23 @@ public class EnemyBehaviour : Entity {
     private void Awake() {
         foreach (Enemy e in EnemyController.Get().Enemies) {
             if (e.type == type) {
-                SetMaxHealth(e.health);
-
-
+                MaxHealth = e.health;
+                speed = e.speed;
             }
         }
 
+        animator = GetComponent<Animator>();
+    }
+
+    private void Update() {
+        if (Target != null) {
+            //movee towards player.
+        }
+
+    }
+
+    private void TriggerAnimation(AnimationState state) {
+        animator.SetTrigger(state.ToString());
     }
 	
 }

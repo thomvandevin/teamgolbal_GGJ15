@@ -4,7 +4,7 @@
 	<enemies>
 		<enemy>
 			<name>Skeleton</name>
-			<type>ranged</type>
+			<type>Ranged</type>
 			<health>5</health>
 			<speed>1</speed>
 		</enemy>
