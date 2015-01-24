@@ -60,6 +60,7 @@
      <Compile Include="Assets\Code\GUI\ScreenFlash.cs" />
      <Compile Include="Assets\Code\GUI\SortingLayerController.cs" />
      <Compile Include="Assets\Code\Level Related\EnemyPlacer.cs" />
+     <Compile Include="Assets\Code\Level Related\IslandTemplate.cs" />
      <Compile Include="Assets\Code\Level Related\LevelData.cs" />
      <Compile Include="Assets\Code\Level Related\LevelInitialization.cs" />
      <Compile Include="Assets\Code\Level Related\MissionCreater.cs" />

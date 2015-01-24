@@ -4,25 +4,29 @@ using System.Collections.Generic;
 
 public class LevelData : MonoBehaviour {
 
-    MissionCreater.Missions goalMission;
-    RoomLoader roomLoader;
-
-    EnemyPlacer enemyPlacer;
-    TrapPlacer trapPlacer;
-    
+    RoomLoader roomLoader;    
     DebuffManager debuffManager;
+
+    MissionCreater.Missions currentMission;
 
     List<GameObject> playerList;
     List<GameObject> enemyList;
     List<GameObject> trapList;
 
+    List<IslandTemplate> islandList;
+    List<GameObject> roomList;
+
     public List<GameObject> _playerList { get { return playerList; } set { playerList = value; } }
     public List<GameObject> _enemyList { get { return enemyList; } set { enemyList = value; } }
     public List<GameObject> _trapList { get { return trapList; } set { trapList = value; } }
 
+    public List<GameObject> _roomList { get { return roomList; } }
+
     GameObject roomPrefab;
 
     bool pvpEnabled;
+
+    public bool _pvpEnable { get { return pvpEnabled; } set { pvpEnabled = value; } }
 
     public void Initialize(DebuffManager debuffManager)
     {
@@ -31,48 +35,77 @@ public class LevelData : MonoBehaviour {
         roomLoader = new RoomLoader();
         roomLoader.Initialize();
 
-        enemyPlacer = new EnemyPlacer();
-        enemyPlacer.Initialize(this);
-
-        trapPlacer = new TrapPlacer();
-        trapPlacer.Initialize(this);
-
-        Reset();
+        SetIslands();
+        SetLevel();
     }
 
-    void Reset()
+    void SetIslands()
     {
-        enemyList.Clear();
-        trapList.Clear();
+        roomList = new List<GameObject>();
 
-        LoadRoom();
-        CreateMission();
+        for (int i = 0; i < 5; i++)
+        {
+            if (i != 4)
+                roomList.Add(roomLoader.GetRandomRoom());
+            else
+                roomList.Add(roomLoader.GetEndRoom());
+        }
+
+        islandList = new List<IslandTemplate>();
+
+        for (int i = 0; i < 5; i++)
+        {
+            if (i != 4)
+            {
+                islandList.Add(new IslandTemplate());
+                islandList[i].Initialize(IslandTemplate.LevelSelection.Random, this, roomList[i], new Vector2(64 * i, 30 * i));
+            }
+            else
+            {
+                islandList.Add(new IslandTemplate());
+                islandList[i].Initialize(IslandTemplate.LevelSelection.End, this, roomList[i], new Vector2(64 * i, 30 * i));
+            }
+        }
+    }
+
+    void SetLevel()
+    {
         PlaceMissionItems();
 
-        RevivePlayers();
-        PlacePlayers();
+        if (islandList.Count == 1)
+            currentMission = MissionCreater.Missions.PlaceOrb;
+        else
+            CreateMission();
     }
 
-    void LoadRoom()
+    void Update()
     {
-        if (GameObject.Find("currentRoom") != null)
-            Destroy(GameObject.Find("currentRoom"));
+        if (Input.GetKeyDown(KeyCode.Space))
+            SetNextLevel();
+    }
 
-        roomPrefab = roomLoader.GetRandomRoom();
+    void SetNextLevel()
+    {
+        islandList[0].DeleteLevel();
 
-        GameObject newRoom = Instantiate(roomPrefab) as GameObject;
-        newRoom.name = "currentRoom";
+        if (islandList.Count > 1)
+        {
+            islandList.RemoveAt(0);
+            roomList.RemoveAt(0);
+
+            SetLevel();
+        }
     }
 
     void CreateMission()
     {
         MissionCreater missionCreater = new MissionCreater();
-        goalMission = missionCreater.CreateMission();
+        currentMission = missionCreater.CreateMission();
     }
 
     void PlaceMissionItems()
     {
-        switch (goalMission)
+        switch (currentMission)
         {
             case MissionCreater.Missions.CommitSuicide:
                 SetPvP(false);
@@ -80,7 +113,7 @@ public class LevelData : MonoBehaviour {
                 break;
             case MissionCreater.Missions.KillCreatures:
                 SetPvP();
-                // Spawn monsters
+                islandList[0].StartCreatures();
                 break;
             case MissionCreater.Missions.KillPlayer:
                 SetPvP();
@@ -158,7 +191,7 @@ public class LevelData : MonoBehaviour {
 
     bool CheckMission(MissionCreater.Missions missionToCheck)
     {
-        if (goalMission == missionToCheck)
+        if (currentMission == missionToCheck)
             return true;
         else
             return false;
