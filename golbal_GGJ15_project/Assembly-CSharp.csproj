@@ -68,6 +68,7 @@
      <Compile Include="Assets\Code\Level Related\TrapPlacer.cs" />
      <Compile Include="Assets\Code\Managers\EnemyContainer.cs" />
      <Compile Include="Assets\Code\Managers\EnemyController.cs" />
+     <Compile Include="Assets\Code\Managers\HUDManager.cs" />
      <Compile Include="Assets\Code\Objects\ObjectController.cs" />
      <Compile Include="Assets\Code\Objects\Orb.cs" />
      <Compile Include="Assets\Code\Shaders\ColorFlash.cs" />
