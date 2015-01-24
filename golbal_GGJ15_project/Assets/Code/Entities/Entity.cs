@@ -3,7 +3,6 @@ using System.Collections;
 
 public class Entity : MonoBehaviour {
 
-<<<<<<< HEAD
     protected LevelData levelData;
 
     protected Vector2 entityPosition;
@@ -15,33 +14,7 @@ public class Entity : MonoBehaviour {
     {
         this.levelData = levelData;
 
-        levelData.SetEntityOccupied(entityPosition, true);
-
-=======
-    private bool enableScreenShake = true;
-    private bool enableColorFlash = true;
-
-    [HideInInspector] public bool IsDead { get; private set; }
-    [HideInInspector] public bool CantMove;
-
-    private int maxHealth;
-    private int health;
-    private Vector2 maxKnockback;
-    private ColorFlash colorFlash;
-
-    //public methods
-    public void SetMaxHealth(int hp) {
-        maxHealth = hp;
-    }
-    
-    public void Damage(int damage) {
-        health -= damage;
-        if (health <= 0) {
-            Die();
-        }
-    }
->>>>>>> origin/master
-
+        //levelData.SetEntityOccupied(entityPosition, true);
     }
 
     protected void CheckPosition(Vector2 moveDirection)
@@ -54,7 +27,7 @@ public class Entity : MonoBehaviour {
 
     protected IEnumerator MovePlayer(Vector2 oldPosition, Vector2 newPosition)
     {
-        levelData.SetEntityOccupied(newPosition, true);
+        //levelData.SetEntityOccupied(newPosition, true);
         moving = true;
 
         float timer = 0;
@@ -67,7 +40,7 @@ public class Entity : MonoBehaviour {
 
             if (timer > 0.8f && !resetPosition)
             {
-                levelData.SetEntityOccupied(oldPosition, false);
+                //levelData.SetEntityOccupied(oldPosition, false);
                 resetPosition = true;
             }
 
@@ -85,14 +58,14 @@ public class Entity : MonoBehaviour {
 
     protected bool CheckIfOccupied(Vector2 checkPosition)
     {
-        if (checkPosition.x < 0 || checkPosition.y < 0 || checkPosition.x >= levelData._tileOccupied.GetLength(0) || checkPosition.y >= levelData._tileOccupied.GetLength(1))
-            return true;
+        //if (checkPosition.x < 0 || checkPosition.y < 0 || checkPosition.x >= levelData._tileOccupied.GetLength(0) || checkPosition.y >= levelData._tileOccupied.GetLength(1))
+        //    return true;
 
-        if (levelData._tileOccupied[(int)checkPosition.x, (int)checkPosition.y])
-            return true;
+        //if (levelData._tileOccupied[(int)checkPosition.x, (int)checkPosition.y])
+        //    return true;
 
-        if (levelData._entityOccupied[(int)checkPosition.x, (int)checkPosition.y])
-            return true;
+        //if (levelData._entityOccupied[(int)checkPosition.x, (int)checkPosition.y])
+        //    return true;
 
         return false;
     }

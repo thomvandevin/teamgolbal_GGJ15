@@ -20,7 +20,7 @@ public class EnemyBehaviour : Entity {
     private void Awake() {
         foreach (Enemy e in EnemyController.Get().Enemies) {
             if (e.type == type) {
-                SetMaxHealth(e.health);
+                //SetMaxHealth(e.health);
 
 
             }
