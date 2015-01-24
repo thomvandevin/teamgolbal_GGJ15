@@ -51,9 +51,10 @@
      <Compile Include="Assets\Code\Core\iTweenExtensions.cs" />
      <Compile Include="Assets\Code\Entities\Character.cs" />
      <Compile Include="Assets\Code\Entities\Entity.cs" />
-     <Compile Include="Assets\Code\Entities\Player.cs" />
      <Compile Include="Assets\Code\GUI\CameraFollow.cs" />
      <Compile Include="Assets\Code\GUI\ScreenFlash.cs" />
+     <Compile Include="Assets\Code\Level Related\LevelData.cs" />
+     <Compile Include="Assets\Code\Level Related\LevelInitialization.cs" />
      <Compile Include="Assets\Code\Shaders\ColorFlash.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.1/UnityEngine.UI.dll</HintPath>
