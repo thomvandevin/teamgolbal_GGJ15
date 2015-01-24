@@ -64,9 +64,9 @@ public class Entity : MonoBehaviour {
         move.Normalize();
         rigidbody2D.velocity = new Vector2(move.x * maxVelocity.x, move.y * maxVelocity.y);
 
-        if (move.x > 0 && Direction == Facing.Left)
+        if (move.x < 0 && Direction == Facing.Left)
             Flip();
-        else if (move.x < 0 && Direction == Facing.Right)
+        else if (move.x > 0 && Direction == Facing.Right)
             Flip();
     }
 

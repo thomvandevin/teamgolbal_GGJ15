@@ -12,6 +12,7 @@ public class Character : Entity{
     private bool isDead;
     private bool isHoldingObject;
     private BoxCollider2D punchCollider;
+    private Animator animator;
 
 	private void Awake () 
     {
@@ -30,6 +31,7 @@ public class Character : Entity{
         maxVelocity = new Vector2(10, 7);
         maxKnockback = new Vector2(1, 1);
         isHoldingObject = false;
+        animator = GetComponent<Animator>();
 
         punchCollider = transform.FindChild("r_punchCollider").GetComponent<BoxCollider2D>();
         transform.FindChild("r_punchCollider").gameObject.layer = gameObject.layer;
@@ -88,6 +90,10 @@ public class Character : Entity{
         o.GetComponent<Orb>().DeAttach();
         holdingObject = null;
         isHoldingObject = false;
+    }
+
+    private void SetAnimation(string animation) {
+
     }
 
 }
