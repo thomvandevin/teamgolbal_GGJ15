@@ -58,6 +58,8 @@
      <Compile Include="Assets\Code\GUI\ScreenFlash.cs" />
      <Compile Include="Assets\Code\Level Related\LevelData.cs" />
      <Compile Include="Assets\Code\Level Related\LevelInitialization.cs" />
+     <Compile Include="Assets\Code\Level Related\MissionCreater.cs" />
+     <Compile Include="Assets\Code\Level Related\RoomLoader.cs" />
      <Compile Include="Assets\Code\Managers\EnemyContainer.cs" />
      <Compile Include="Assets\Code\Managers\EnemyController.cs" />
      <Compile Include="Assets\Code\Objects\ObjectController.cs" />

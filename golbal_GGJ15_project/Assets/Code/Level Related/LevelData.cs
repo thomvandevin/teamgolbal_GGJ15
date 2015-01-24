@@ -4,40 +4,160 @@ using System.Collections.Generic;
 
 public class LevelData : MonoBehaviour {
 
-    List<GameObject> entityList;
+    MissionCreater.Missions goalMission;
+    RoomLoader roomLoader;
 
-    bool[,] tileOccupied;
-    bool[,] entityOccupied;
+    List<GameObject> playerList;
+    List<GameObject> enemyList;
+    List<GameObject> trapList;
 
-    public List<GameObject> _entityList { get { return entityList; } }
-    public bool[,] _tileOccupied { get { return tileOccupied; } }
-    public bool[,] _entityOccupied { get { return entityOccupied; } }
+    GameObject enemyPrefab, trapPrefab;
+    GameObject roomPrefab;
 
-    public void Initialization(bool[,] tileOccupied, bool[,] entityOccupied)
+    bool pvpEnabled;
+
+    public void Initialize(List<GameObject> playerList)
     {
-        this.tileOccupied = tileOccupied;
-        this.entityOccupied = entityOccupied;
+        this.playerList = playerList;
 
-        Debug.Log("Leveldata: Added");
+        roomLoader = new RoomLoader();
+        roomLoader.Initialize();
+
+        UpdatePlayers();
+
+        Reset();
     }
 
-    public void AddEntity(GameObject entity)
+    void UpdatePlayers()
     {
-        entityList.Add(entity);
+        for (int i = 0; i < playerList.Count; i++)
+        {
+            GameObject playerObject = Instantiate(playerList[i]) as GameObject;
+            //playerObject.GetComponent<Character>() Set level data
+        }
     }
 
-    public void UpdateEntityList(List<GameObject> entityList)
+    void Reset()
     {
-        this.entityList = entityList;
+        enemyList.Clear();
+        trapList.Clear();
+
+        LoadRoom();
+        CreateMission();
+        PlaceMissionItems();
+
+        RevivePlayers();
+        PlacePlayers();
     }
 
-    public void SetTileOccupied(Vector2 tilePosition, bool tileValue)
+    void LoadRoom()
     {
-        tileOccupied[(int)tilePosition.x, (int)tilePosition.y] = tileValue;
+        if (GameObject.Find("currentRoom") != null)
+            Destroy(GameObject.Find("currentRoom"));
+
+        roomPrefab = roomLoader.GetRandomRoom();
+
+        GameObject newRoom = Instantiate(roomPrefab) as GameObject;
+        newRoom.name = "currentRoom";
     }
 
-    public void SetEntityOccupied(Vector2 entityPosition, bool entityValue)
+    void CreateMission()
     {
-        entityOccupied[(int)entityPosition.x, (int)entityPosition.y] = entityValue;
+        MissionCreater missionCreater = new MissionCreater();
+        goalMission = missionCreater.CreateMission();
+    }
+
+    void PlaceMissionItems()
+    {
+        switch (goalMission)
+        {
+            case MissionCreater.Missions.CommitSuicide:
+                SetPvP(false);
+                // Place spikes
+                break;
+            case MissionCreater.Missions.KillCreatures:
+                SetPvP();
+                // Spawn monsters
+                break;
+            case MissionCreater.Missions.KillPlayer:
+                SetPvP();
+                break;
+            case MissionCreater.Missions.PlaceOrb:
+                SetPvP();
+                // Place orb altar
+                break;
+        }
+    }
+
+    void RevivePlayers()
+    {
+        // Loop throught the players, and see if any are a ghost
+        // If this happens to be the case, revive them and remove all debuffs
+    }
+
+    void PlacePlayers()
+    {
+        int numberOfGhost = 0;
+
+        for (int i = 0; i < playerList.Count; i++)
+        {
+            // numberOfghost ++; for every ghost
+        }
+    }
+
+    void SetPvP(bool pvp = true)
+    {
+        if (pvpEnabled != pvp)
+            pvpEnabled = pvp;
+    }
+
+    public void Enemy_Killed(GameObject enemy)
+    {
+        if (enemyList.Contains(enemy))
+        {
+            enemyList.Remove(enemy);
+            Destroy(enemy);
+
+            if (CheckMission(MissionCreater.Missions.KillCreatures))
+            {
+                if (enemyList.Count == 0)
+                {
+                    // The players have won the mission
+                }
+            }
+        }
+    }
+
+    public void Player_CommitsSuicide(GameObject player)
+    {
+        // Award the player who commited suicide
+
+        Player_Died(player);
+    }
+
+    public void Player_KillsAnother(GameObject killingPlayer, GameObject killedPlayer)
+    {
+        // Award the killingPlayer
+
+        Player_Died(killedPlayer);
+    }
+
+    public void Player_PlacesOrb(GameObject player)
+    {
+
+    }
+
+    public void Player_Died(GameObject player)
+    {
+        // Set the player to a ghost mode
+        // Check to see if all the players have died, and thus went game over
+    }
+
+    bool CheckMission(MissionCreater.Missions missionToCheck)
+    {
+        if (goalMission == missionToCheck)
+            return true;
+        else
+            return false;
     }
 }
