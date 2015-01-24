@@ -33,7 +33,6 @@ public class Entity : MonoBehaviour {
         CanMove = false;
         Invoke("FixedMovement", .1f);
         gameObject.rigidbody2D.AddForce(hitDirection * maxKnockback.x * multiplier);
-
         iTween.PunchPosition(Camera.main.gameObject, -(hitDirection * maxKnockback.y * multiplier), .2f);
     }
 
@@ -44,15 +43,11 @@ public class Entity : MonoBehaviour {
 
     public void Damage(GameObject source, int damageValue, float damageMultiplier) {
         Health -= Mathf.RoundToInt(damageValue * damageMultiplier);
-        KnockBack(source.transform.position, 1);
+        KnockBack(source.transform.position, damageMultiplier);
     }
 
     protected void UpdateMove(Vector2 directions) {
         move = directions;
-    }
-
-    void Update() {
-        print(CanMove);
     }
 
 	//private methods
@@ -62,13 +57,7 @@ public class Entity : MonoBehaviour {
         CanMove = true;
     }
 
-    private void FixedUpdate() {
-        if (CanMove)
-            FixedMovement();
-
-    }
-
-    private void FixedMovement() {
+    protected void FixedMovement() {
         if (!CanMove)
             CanMove = true;
 
