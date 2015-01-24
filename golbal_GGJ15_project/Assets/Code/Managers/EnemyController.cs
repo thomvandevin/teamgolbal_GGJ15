@@ -15,7 +15,7 @@ public class EnemyController : MonoBehaviour {
 
     public static EnemyController Get() {
         if (_instance == null) {
-            _instance = GameObject.Find("r_EnemyController").AddComponent<EnemyController>();
+            _instance = GameObject.Find("r_EnemyController").GetComponent<EnemyController>();
         }
         return _instance;
     }

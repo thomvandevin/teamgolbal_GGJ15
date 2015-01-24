@@ -10,6 +10,7 @@ public class Character : Entity{
     private float damageMultiplier;
     private bool isDead;
     private bool isHoldingObject;
+    private GameObject holdingObject;
 
 	private void Awake () 
     {
@@ -18,8 +19,10 @@ public class Character : Entity{
         CameraFollow.Get().Register(gameObject.transform);
         PlayerController.Get().AddPlayer(gameObject);
 
-        gamePadIndex = GamePad.Index.One;
-        gameObject.layer = 7 + GamePad.GetIntFromIndex(gamePadIndex);
+        int playerIndexInt = PlayerController.Get().players.IndexOf(gameObject) + 1;
+        gamePadIndex = GamePad.GetIndexFromInt(playerIndexInt);
+        gameObject.layer = 7 + playerIndexInt;
+        gameObject.name = "Player " + playerIndexInt;
         Direction = Facing.Right;
         damageMultiplier = 1f;
         MaxHealth = 10;
@@ -42,27 +45,35 @@ public class Character : Entity{
     }
 
     private void Attack() {
-        foreach(GameObject o in (ObjectController.Get().objects)){
-            if(o.GetComponent<CircleCollider2D>().bounds.Intersects(GetComponent<BoxCollider2D>().bounds)){
-                if (!isHoldingObject) {
+        if (!isHoldingObject) {
+            foreach (GameObject o in (ObjectController.Get().objects)) {
+                if (o.GetComponent<CircleCollider2D>().bounds.Intersects(GetComponent<BoxCollider2D>().bounds)) {
                     PickUpObject(o);
+                    return;
                 }
-                return;
             }
+        } else {
+            DropObject(holdingObject);
         }
+        
     }
 
     private void OnDestroy() {
+        if (isHoldingObject) {
+            //dropobject
+        }
         PlayerController.Get().RemovePlayer(gameObject);
     }
 
     private void PickUpObject(GameObject o) {
         o.GetComponent<Orb>().Attach(gameObject.transform);
+        holdingObject = o;
         isHoldingObject = true;
     }
 
     private void DropObject(GameObject o) {
         o.GetComponent<Orb>().DeAttach();
+        holdingObject = null;
         isHoldingObject = false;
     }
 

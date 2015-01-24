@@ -14,7 +14,7 @@ public class ObjectController : MonoBehaviour {
 	//public methods
     public static ObjectController Get() {
         if (_instance == null) {
-            _instance = GameObject.Find("r_ObjectController").AddComponent<ObjectController>();
+            _instance = GameObject.Find("r_ObjectController").GetComponent<ObjectController>();
         }
         return _instance;
     }

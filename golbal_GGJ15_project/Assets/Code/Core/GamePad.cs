@@ -52,6 +52,23 @@ namespace GamepadInput
             }
         }
 
+        public static Index GetIndexFromInt(int index) {
+            switch (index) {
+                case 0:
+                    return Index.Any;
+                case 1:
+                    return Index.One;
+                case 2:
+                    return Index.Two;
+                case 3:
+                    return Index.Three;
+                case 4:
+                    return Index.Four;
+                default:
+                    return Index.Any;
+            }
+        }
+
         /// <summary>
         /// returns a specified axis
         /// </summary>

@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour {
 
 	//public fields
     [HideInInspector]
-    public List<GameObject> players;
+    public List<GameObject> players { get; private set; }
 	
 	//private fields
     private static PlayerController _instance;
@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour {
 	//public methods
     public static PlayerController Get() {
         if (_instance == null) {
-            _instance = GameObject.Find("r_ObjectController").AddComponent<PlayerController>();
+            _instance = GameObject.Find("r_PlayerController").GetComponent<PlayerController>();
         }
         return _instance;
     }

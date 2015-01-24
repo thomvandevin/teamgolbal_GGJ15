@@ -34,7 +34,6 @@ public class EnemyBehaviour : Entity {
             if (e.type == type) {
                 MaxHealth = e.health;
                 maxVelocity = new Vector2(e.maxvelocityx, e.maxvelocityy);
-                print(maxVelocity);
                 maxKnockback = new Vector2(500, 2);
             }
         }
