@@ -7,34 +7,37 @@ public class LevelData : MonoBehaviour {
     MissionCreater.Missions goalMission;
     RoomLoader roomLoader;
 
+    EnemyPlacer enemyPlacer;
+    TrapPlacer trapPlacer;
+    
+    DebuffManager debuffManager;
+
     List<GameObject> playerList;
     List<GameObject> enemyList;
     List<GameObject> trapList;
 
-    GameObject enemyPrefab, trapPrefab;
+    public List<GameObject> _playerList { get { return playerList; } set { playerList = value; } }
+    public List<GameObject> _enemyList { get { return enemyList; } set { enemyList = value; } }
+    public List<GameObject> _trapList { get { return trapList; } set { trapList = value; } }
+
     GameObject roomPrefab;
 
     bool pvpEnabled;
 
-    public void Initialize(List<GameObject> playerList)
+    public void Initialize(DebuffManager debuffManager)
     {
-        this.playerList = playerList;
+        this.debuffManager = debuffManager;
 
         roomLoader = new RoomLoader();
         roomLoader.Initialize();
 
-        UpdatePlayers();
+        enemyPlacer = new EnemyPlacer();
+        enemyPlacer.Initialize(this);
+
+        trapPlacer = new TrapPlacer();
+        trapPlacer.Initialize(this);
 
         Reset();
-    }
-
-    void UpdatePlayers()
-    {
-        for (int i = 0; i < playerList.Count; i++)
-        {
-            GameObject playerObject = Instantiate(playerList[i]) as GameObject;
-            //playerObject.GetComponent<Character>() Set level data
-        }
     }
 
     void Reset()
