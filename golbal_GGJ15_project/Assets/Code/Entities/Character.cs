@@ -2,50 +2,35 @@
 using System.Collections;
 using GamepadInput;
 
-public class Character : Entity {
+public class Character : Entity{
 
-    private enum Facing
-    {
-        LEFT,
-        RIGHT,
-        UP,
-        DOWN
-    }
-    private Facing Direction;    
+
+    private ColorFlash colorFlash;
+
     private GamePad.Index gamePadIndex;
+    private float damageMultiplier;
+    private bool isDead;
 
-	public void Initialize (LevelData levelData, Vector2 playerPosition) 
+	void Start () 
     {
         gamePadIndex = GamePad.Index.One;
-        Direction = Facing.RIGHT;
+        Direction = Facing.Right;
 
-        entityPosition = playerPosition;
-        transform.position = entityPosition;
+        damageMultiplier = 1f;
+        MaxHealth = 10;
 
-        Initialize(levelData);
+        maxVelocity = new Vector2(10, 5);
+        maxKnockback = new Vector2(1, 1);
 	}
 
-	private void Update () 
-    {
-        if (Input.GetKey(KeyCode.W) && !moving)
-            CheckPosition(new Vector2(0, 1));
-        if (Input.GetKey(KeyCode.S) && !moving)
-            CheckPosition(new Vector2(0, -1));
-        if (Input.GetKey(KeyCode.A) && !moving)
-            CheckPosition(new Vector2(-1, 0));
-        if (Input.GetKey(KeyCode.D) && !moving)
-            CheckPosition(new Vector2(1, 0));
-	}
+    private void Update() {
+        if (CanMove) {
+            UpdateMove(GamePad.GetAxis(GamePad.Axis.LeftStick, gamePadIndex));
+        }
 
-    private void Flip()
-    {
-        if (Direction == Facing.LEFT)
-            Direction = Facing.RIGHT;
-        else if (Direction == Facing.RIGHT)
-            Direction = Facing.LEFT;
 
-        Vector3 playerScale = transform.localScale;
-        playerScale.x *= -1;
-        transform.localScale = playerScale;
-    }    
+        if (GamePad.GetKeyboardKeyDown(KeyCode.LeftShift))
+            KnockBack(new Vector2(0, 0), damageMultiplier);
+    }
+
 }

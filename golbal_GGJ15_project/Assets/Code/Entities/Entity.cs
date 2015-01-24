@@ -1,75 +1,94 @@
 ﻿using UnityEngine;
 using System.Collections;
+using GamepadInput;
 
 public class Entity : MonoBehaviour {
 
+    [HideInInspector]
+    public enum Facing {
+        Left,
+        Right,
+        Up,
+        Down
+    }
+    protected Facing Direction;
+
+	//public fields
     protected int MaxHealth;
-    protected int Health { get; private set; }
+    [HideInInspector]
+    public int Health { get; private set; }
+    [HideInInspector]
+    public bool IsDead { get; private set; }
 
-    protected LevelData levelData;
+    protected bool CanMove;
+	
+	//private fields
+    protected Vector2 move, maxVelocity, maxKnockback;
+	
+	//public methods
+    public void KnockBack(Vector3 source, float multiplier) {
+        Vector2 hitDirection = gameObject.transform.position - source;
+        hitDirection.Normalize();
 
-    protected Vector2 entityPosition;
+        CanMove = false;
+        Invoke("FixedMovement", .1f);
+        gameObject.rigidbody2D.AddForce(hitDirection * maxKnockback.x * multiplier);
 
-    protected float speed = 0.2f;
-    protected bool moving;
-
-    protected void Initialize(LevelData levelData)
-    {
-        this.levelData = levelData;
-
-        levelData.SetEntityOccupied(entityPosition, true);
+        iTween.PunchPosition(Camera.main.gameObject, -(hitDirection * maxKnockback.y * multiplier), .2f);
     }
 
-    protected void CheckPosition(Vector2 moveDirection)
-    {
-        Vector2 futurePosition = entityPosition + moveDirection;
-
-        if (!CheckIfOccupied(futurePosition)) // We know the position isn't occupied
-            StartCoroutine(MovePlayer(entityPosition, futurePosition));
+    public void Damage(GameObject source, int damageValue) {
+        Health -= damageValue;
+        KnockBack(source.transform.position, 1);
     }
 
-    protected IEnumerator MovePlayer(Vector2 oldPosition, Vector2 newPosition)
-    {
-        levelData.SetEntityOccupied(newPosition, true);
-        moving = true;
-
-        float timer = 0;
-        bool resetPosition = false;
-
-        while (true)
-        {
-            timer += (1f / speed) * Time.deltaTime;
-            transform.position = Vector2.Lerp(oldPosition, newPosition, timer);
-
-            if (timer > 0.8f && !resetPosition)
-            {
-                levelData.SetEntityOccupied(oldPosition, false);
-                resetPosition = true;
-            }
-
-            if(timer >= 1)
-                break;
-
-            yield return null;
-        }
-
-        entityPosition = newPosition;
-        transform.position = entityPosition;
-
-        moving = false;
+    public void Damage(GameObject source, int damageValue, float damageMultiplier) {
+        Health -= Mathf.RoundToInt(damageValue * damageMultiplier);
+        KnockBack(source.transform.position, 1);
     }
 
-    protected bool CheckIfOccupied(Vector2 checkPosition)
-    {
-        if (checkPosition.x < 0 || checkPosition.y < 0 || checkPosition.x >= levelData._tileOccupied.GetLength(0) || checkPosition.y >= levelData._tileOccupied.GetLength(1))
-            return true;
-
-        if (levelData._tileOccupied[(int)checkPosition.x, (int)checkPosition.y])
-            return true;
-
-        if (levelData._entityOccupied[(int)checkPosition.x, (int)checkPosition.y])
-            return true;
-
-        return false;
+    protected void UpdateMove(Vector2 directions) {
+        move = directions;
     }
+
+    void Update() {
+        print(CanMove);
+    }
+
+	//private methods
+    private void Awake() {
+        move = Vector2.zero;
+        IsDead = false;
+        CanMove = true;
+    }
+
+    private void FixedUpdate() {
+        if (CanMove)
+            FixedMovement();
+
+    }
+
+    private void FixedMovement() {
+        if (!CanMove)
+            CanMove = true;
+
+        rigidbody2D.velocity = new Vector2(move.x * maxVelocity.x, move.y * maxVelocity.x);
+
+        if (move.x > 0 && Direction == Facing.Left)
+            Flip();
+        else if (move.x < 0 && Direction == Facing.Right)
+            Flip();
+    }
+
+    private void Flip() {
+        if (Direction == Facing.Left)
+            Direction = Facing.Right;
+        else if (Direction == Facing.Right)
+            Direction = Facing.Left;
+
+        Vector3 playerScale = transform.localScale;
+        playerScale.x *= -1;
+        transform.localScale = playerScale;
+    }
+	
 }

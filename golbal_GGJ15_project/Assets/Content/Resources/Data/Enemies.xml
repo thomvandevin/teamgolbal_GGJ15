@@ -4,9 +4,10 @@
 	<enemies>
 		<enemy>
 			<name>Skeleton</name>
-			<type>Ranged</type>
+			<type>Melee</type>
 			<health>5</health>
-			<speed>1</speed>
+			<maxvelocityx>10</maxvelocityx>
+			<maxvelocityy>5</maxvelocityy>
 		</enemy>
 	</enemies>
 </enemycollection>

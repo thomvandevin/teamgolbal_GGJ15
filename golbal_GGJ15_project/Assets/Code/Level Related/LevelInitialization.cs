@@ -66,7 +66,6 @@ public class LevelInitialization : MonoBehaviour {
         entityList = new List<GameObject>();
 
         GameObject playerObject = Instantiate(basePlayer, new Vector2(0, 0), Quaternion.identity) as GameObject;
-        playerObject.GetComponent<Character>().Initialize(levelData, new Vector2(0, 0));
 
         entityList.Add(playerObject);
 

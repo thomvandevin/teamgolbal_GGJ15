@@ -31,7 +31,9 @@ public class EnemyBehaviour : Entity {
         foreach (Enemy e in EnemyController.Get().Enemies) {
             if (e.type == type) {
                 MaxHealth = e.health;
-                speed = e.speed;
+                maxVelocity = new Vector2(e.maxvelocityx, e.maxvelocityy);
+                print(maxVelocity);
+                maxKnockback = new Vector2(500, 2);
             }
         }
 
