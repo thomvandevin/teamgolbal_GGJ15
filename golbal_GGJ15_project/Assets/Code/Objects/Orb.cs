@@ -4,36 +4,40 @@ using System.Collections;
 public class Orb : MonoBehaviour {
 
 	//public fields
-    public bool Attached { get; private set; }
     public Transform Target { get; private set; }
 	
 	//private fields
     private Animator animator;
     private Vector3 targetOffset;
+    private SpriteRenderer shadow;
+    private bool updateSortingLayer;
 
 	//public methods
     public void Attach(Transform target) {
         Target = target;
-        Attached = true;
+        shadow.enabled = false;
+        GetComponent<ResponsiveSortingLayer>().OverrideLayer = true;
     }
 
     public void DeAttach() {
         Target = null;
-        Attached = false;
-        //rigidbody2D.AddForce(new Vector2(Random.Range(-40, 40) * .3f, 8));
+        shadow.enabled = true;
+        GetComponent<ResponsiveSortingLayer>().OverrideLayer = false;
+        //rigidbody2D.AddForce(new Vector2(Random.Range(-40, 40), 30));
     }
 	
 	//private methods
     private void Awake() {
-        Attached = false;
         animator = gameObject.GetComponent<Animator>();
+        shadow = transform.FindChild("r_Shadow").GetComponent<SpriteRenderer>();
         ObjectController.Get().AddObject(gameObject);
-        targetOffset = new Vector3(0, 1, -.1f);
+        targetOffset = new Vector3(0, 1, 0);
     }
 
     private void Update() {
         if (Target != null) {
             Move();
+            UpdateSortingLayer();
         }
     }
 
@@ -44,6 +48,9 @@ public class Orb : MonoBehaviour {
         }
     }
 
+    private void UpdateSortingLayer() {
+        GetComponent<ResponsiveSortingLayer>().SortingLayer = Target.gameObject.GetComponent<ResponsiveSortingLayer>().SortingLayer + 1;
+    }
 
     private void OnDestroy() {
         ObjectController.Get().RemoveObject(gameObject);

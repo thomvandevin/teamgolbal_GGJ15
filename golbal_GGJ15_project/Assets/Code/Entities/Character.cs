@@ -4,13 +4,14 @@ using GamepadInput;
 
 public class Character : Entity{
 
-    private ColorFlash colorFlash;
+    public GameObject holdingObject { get; private set; }
 
+    private ColorFlash colorFlash;
     private GamePad.Index gamePadIndex;
     private float damageMultiplier;
     private bool isDead;
     private bool isHoldingObject;
-    private GameObject holdingObject;
+    private BoxCollider2D punchCollider;
 
 	private void Awake () 
     {
@@ -25,22 +26,29 @@ public class Character : Entity{
         gameObject.name = "Player " + playerIndexInt;
         Direction = Facing.Right;
         damageMultiplier = 1f;
-        MaxHealth = 10;
+        MaxHealth = 100;
         maxVelocity = new Vector2(10, 7);
         maxKnockback = new Vector2(1, 1);
         isHoldingObject = false;
+
+        punchCollider = transform.FindChild("r_punchCollider").GetComponent<BoxCollider2D>();
+        transform.FindChild("r_punchCollider").gameObject.layer = gameObject.layer;
 	}
+
+    private void FixedUpdate() {
+        if (CanMove) {
+            FixedMovement();
+
+            UpdateMove(GamePad.GetAxis(GamePad.Axis.LeftStick, gamePadIndex));
+        }
+    }
 
     private void Update() {
         if (CanMove) {
-            UpdateMove(GamePad.GetAxis(GamePad.Axis.LeftStick, gamePadIndex));
-            if (GamePad.GetButtonDown(GamePad.Button.X, gamePadIndex)) {
+            if (GamePad.GetButtonDown(GamePad.Button.A, gamePadIndex)) {
                 Attack();
             }
         }
-
-        if (GamePad.GetKeyboardKeyDown(KeyCode.LeftShift))
-            KnockBack(new Vector2(0, 0), damageMultiplier);
     }
 
     private void Attack() {
@@ -53,8 +61,14 @@ public class Character : Entity{
             }
         } else {
             DropObject(holdingObject);
+            return;
         }
-        
+
+        foreach (GameObject p in (PlayerController.Get().players)) {
+            if (p.GetComponent<BoxCollider2D>().bounds.Intersects(punchCollider.bounds) && p != gameObject) {
+                p.GetComponent<Character>().Damage(gameObject, Random.Range(10, 13));
+            }
+        }        
     }
 
     private void OnDestroy() {
