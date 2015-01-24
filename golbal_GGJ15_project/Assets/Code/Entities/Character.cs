@@ -39,7 +39,6 @@ public class Character : Entity{
             }
         }
 
-
         if (GamePad.GetKeyboardKeyDown(KeyCode.LeftShift))
             KnockBack(new Vector2(0, 0), damageMultiplier);
     }
