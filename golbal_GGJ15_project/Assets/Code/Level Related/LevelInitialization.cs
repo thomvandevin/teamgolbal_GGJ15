@@ -24,6 +24,32 @@ public class LevelInitialization : MonoBehaviour {
         {
             playerList.Add(basePlayer);
         }
+<<<<<<< HEAD
+=======
+
+        levelData.Initialization(tileOccupied, entityOccupied);
+
+        SetPlayers();
+    }
+
+    void SetPlayers()
+    {
+        entityList = new List<GameObject>();
+
+        GameObject playerObject = Instantiate(basePlayer, new Vector2(0, 0), Quaternion.identity) as GameObject;
+
+        entityList.Add(playerObject);
+
+        SetCamera();
+    }
+
+    void SetCamera()
+    {
+        Camera.main.orthographicSize = tileOccupied.GetLength(1) / 2f;
+        Camera.main.transform.position = new Vector3(tileOccupied.GetLength(0) / 2f - 0.5f, tileOccupied.GetLength(1) / 2f - 0.5f, Camera.main.transform.position.z);
+
+        SetLevelData();
+>>>>>>> origin/master
     }
 
     void SetLevelData()

@@ -8,6 +8,6 @@ public class Enemy {
     public string name;
     public EnemyType type;
     public int health;
-    public int speed;
-
+    public int maxvelocityx;
+    public int maxvelocityy;
 }
