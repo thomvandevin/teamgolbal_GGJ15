@@ -56,7 +56,7 @@ public class Entity : MonoBehaviour {
     }
 
 	//private methods
-    private void Awake() {
+    protected void Awake() {
         move = Vector2.zero;
         IsDead = false;
         CanMove = true;
@@ -72,7 +72,8 @@ public class Entity : MonoBehaviour {
         if (!CanMove)
             CanMove = true;
 
-        rigidbody2D.velocity = new Vector2(move.x * maxVelocity.x, move.y * maxVelocity.x);
+        move.Normalize();
+        rigidbody2D.velocity = new Vector2(move.x * maxVelocity.x, move.y * maxVelocity.y);
 
         if (move.x > 0 && Direction == Facing.Left)
             Flip();

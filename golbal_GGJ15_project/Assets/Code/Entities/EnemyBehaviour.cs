@@ -28,6 +28,8 @@ public class EnemyBehaviour : Entity {
 	
 	//private methods
     private void Awake() {
+        base.Awake();
+
         foreach (Enemy e in EnemyController.Get().Enemies) {
             if (e.type == type) {
                 MaxHealth = e.health;
