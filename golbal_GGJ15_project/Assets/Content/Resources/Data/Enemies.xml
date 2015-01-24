@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<enemycollection>
+	<enemies>
+		<enemy>
+			<name>Skeleton</name>
+			<type>ranged</type>
+			<health>5</health>
+			<speed>1</speed>
+		</enemy>
+	</enemies>
+</enemycollection>

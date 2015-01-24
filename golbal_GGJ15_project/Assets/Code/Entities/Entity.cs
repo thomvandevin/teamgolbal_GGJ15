@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Entity : MonoBehaviour {
 
+<<<<<<< HEAD
     protected LevelData levelData;
 
     protected Vector2 entityPosition;
@@ -16,6 +17,30 @@ public class Entity : MonoBehaviour {
 
         levelData.SetEntityOccupied(entityPosition, true);
 
+=======
+    private bool enableScreenShake = true;
+    private bool enableColorFlash = true;
+
+    [HideInInspector] public bool IsDead { get; private set; }
+    [HideInInspector] public bool CantMove;
+
+    private int maxHealth;
+    private int health;
+    private Vector2 maxKnockback;
+    private ColorFlash colorFlash;
+
+    //public methods
+    public void SetMaxHealth(int hp) {
+        maxHealth = hp;
+    }
+    
+    public void Damage(int damage) {
+        health -= damage;
+        if (health <= 0) {
+            Die();
+        }
+    }
+>>>>>>> origin/master
 
     }
 
