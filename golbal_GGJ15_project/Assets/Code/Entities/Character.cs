@@ -6,6 +6,10 @@ public class Character : Entity {
 
     public GameObject holdingObject { get; private set; }
 
+    public int AdditiveSpeed { get; set { maxVelocity *= AdditiveSpeed; } }
+    public int AdditiveHealth { get; set { MaxHealth += AdditiveHealth; } }
+    public int AdditiveAttack { get; set { damageMultiplier = AdditiveAttack; } }
+
     private ColorFlash colorFlash;
     private GamePad.Index gamePadIndex;
     private float damageMultiplier;
@@ -92,7 +96,7 @@ public class Character : Entity {
 
         foreach (GameObject p in (PlayerController.Get().players)) {
             if (p.GetComponent<BoxCollider2D>().bounds.Intersects(punchCollider.bounds) && p != gameObject) {
-                p.GetComponent<Character>().Damage(gameObject, Random.Range(10, 13));
+                p.GetComponent<Character>().Damage(gameObject, Random.Range(10, 13), damageMultiplier);
             }
         }
 
