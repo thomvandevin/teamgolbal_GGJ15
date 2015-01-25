@@ -18,7 +18,7 @@ public class LevelInitialization : MonoBehaviour {
 
     void InitializePlayers()
     {
-        GameObject basePlayer = Resources.Load("Prefabs/Entities/prefab_tempPlayer") as GameObject;
+        GameObject basePlayer = Resources.Load("Prefabs/Entities/r_basePlayer") as GameObject;
 
         playerList = new List<GameObject>();
 
@@ -29,6 +29,8 @@ public class LevelInitialization : MonoBehaviour {
         }
 
         levelData._playerList = playerList;
+
+        levelData.SetPlayers();
         levelData.SetLevel();
     }
 }

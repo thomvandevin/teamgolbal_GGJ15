@@ -12,7 +12,7 @@ public class EnemyPlacer : MonoBehaviour {
     {
         this.levelData = levelData;
 
-        enemyPrefab = Resources.Load("Prefabs/Entities/r_enemy") as GameObject;
+        enemyPrefab = Resources.Load("Prefabs/Entities/Enemy_Skeleton") as GameObject;
     }
 
     public void InstantiateEnemies(GameObject levelPrefab)
@@ -33,7 +33,6 @@ public class EnemyPlacer : MonoBehaviour {
         for (int i = 0; i < spawnPoints.Count; i++)
         {
             GameObject newEnemy = Instantiate(enemyPrefab, spawnPoints[i], Quaternion.identity) as GameObject;
-            newEnemy.GetComponent<TestEnemy>().Initialize(levelData);
             enemyList.Add(newEnemy);
         }
 

@@ -64,6 +64,32 @@ public class LevelData : MonoBehaviour {
         }
     }
 
+    public void SetPlayers()
+    {
+        for (int i = 0; i < playerList.Count; i++)
+        {
+            Vector3 baseDifference = Vector3.zero;
+
+            switch (i)
+            {
+                case 0:
+                    baseDifference += new Vector3(-1f, 2f, 0);
+                    break;
+                case 1:
+                    baseDifference += new Vector3(1f, 2f, 0);
+                    break;
+                case 2:
+                    baseDifference += new Vector3(-3f, 0f, 0);
+                    break;
+                case 3:
+                    baseDifference += new Vector3(3f, 0f, 0);
+                    break;
+            }
+
+            playerList[i].transform.position = islandList[0]._landingSpot.transform.position + baseDifference;
+        }
+    }
+
     public void SetLevel()
     {
         if (islandList.Count == 1)

@@ -30,8 +30,6 @@ public class RoomLoader : MonoBehaviour {
     {
         int randomNumber = Random.Range(0, roomPrefabs.Count);
 
-        Debug.Log(roomPrefabs.Count);
-
         return roomPrefabs[randomNumber];
     }
 

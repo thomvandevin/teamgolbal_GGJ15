@@ -43,7 +43,11 @@ public class IslandTemplate : MonoBehaviour {
         islandObject = Instantiate(islandPrefab, islandPosition, Quaternion.identity) as GameObject;
 
         if (levelSelection != LevelSelection.End)
+        {
             mushroom = islandObject.transform.FindChild("mushroom_pad").gameObject;
+
+                Debug.Log(mushroom.name);
+        }
 
         landingSpot = islandObject.transform.FindChild("landing_pad").gameObject;
     }
