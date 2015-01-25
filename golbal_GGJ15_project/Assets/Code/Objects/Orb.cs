@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using GamepadInput;
 
 public class Orb : MonoBehaviour {
 
     //public fields
     public Transform Target { get; private set; }
+    public GamePad.Index HeldByPlayer { get; private set; }
 
     //private fields
     private Animator animator;
@@ -12,13 +14,19 @@ public class Orb : MonoBehaviour {
     private SpriteRenderer shadow;
     private bool updateSortingLayer;
     private CircleCollider2D collider;
+    
+    private bool isFalling;
 
     //public methods
-    public void Attach(Transform target) {
+    public void Attach(Transform target, GamePad.Index playerIndex) {
+        if (isFalling)
+            return;
         Target = target;
         shadow.enabled = false;
         GetComponent<ResponsiveSortingLayer>().OverrideLayer = true;
         collider.enabled = false;
+        isFalling = false;
+        HeldByPlayer = playerIndex;
         //Move();
     }
 
@@ -37,6 +45,7 @@ public class Orb : MonoBehaviour {
                 print("you're done");
             }
         }
+        //isFalling = true;
     }
 
     private void NoTarget() {
@@ -58,6 +67,10 @@ public class Orb : MonoBehaviour {
             Move();
             if (updateSortingLayer)
                 UpdateSortingLayer();
+        }
+        if (isFalling)
+        {
+            isFalling = !rigidbody2D.IsSleeping();
         }
     }
 
