@@ -41,7 +41,17 @@ public class HUDManager : MonoBehaviour
             if (_characterPortraits[i].GetComponent<Image>() != null)
             {
                 _characterPortraits[i].GetComponent<Image>().transform.parent = _canvas.transform;
-                _characterPortraits[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites/Entities/Players/red");
+
+                // AVATARS
+                if (i == 0)
+                    _characterPortraits[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites/Entities/Players/red");
+                if (i == 1)
+                    _characterPortraits[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites/Entities/Players/blue");
+                if (i == 2)
+                    _characterPortraits[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites/Entities/Players/green");
+                if (i == 3)
+                    _characterPortraits[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites/Entities/Players/yellow");
+
 
                 // GAMEJAM MAGIC CODE
                 if (_characterPortraits.Count == 1)
