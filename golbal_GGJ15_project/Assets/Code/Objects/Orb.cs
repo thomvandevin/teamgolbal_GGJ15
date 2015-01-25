@@ -19,7 +19,7 @@ public class Orb : MonoBehaviour {
         shadow.enabled = false;
         GetComponent<ResponsiveSortingLayer>().OverrideLayer = true;
         collider.enabled = false;
-        Move();
+        //Move();
     }
 
     public void DeAttach() {
