@@ -37,7 +37,8 @@ public class Character : Entity
         maxVelocity = new Vector2(10, 7);
         maxKnockback = new Vector2(700, 700);
         isHoldingObject = false;
-        animator = GetComponent<Animator>();
+        animator = gameObject.AddComponent<Animator>();
+        animator.runtimeAnimatorController = GetCharacterAnimator(playerIndexInt);
         currentAnimation = "";
         alreadyAnimating = false;
         OnDamage += Hit;
@@ -192,4 +193,20 @@ public class Character : Entity
         animator.SetBool(animation, value);
     }
 
+    private RuntimeAnimatorController GetCharacterAnimator(int playerIndex) {
+        RuntimeAnimatorController controller;
+        switch (playerIndex) {
+            case 1:
+                return controller = Resources.Load("Sprites/Entities/Players/Animations/Red/Animator_Player_Red") as RuntimeAnimatorController;
+            case 2:
+                return controller = Resources.Load("Sprites/Entities/Players/Animations/Blue/Animator_Player_Blue") as RuntimeAnimatorController;
+            case 3:
+                return controller = Resources.Load("Sprites/Entities/Players/Animations/Green/Animator_Player_Green") as RuntimeAnimatorController;
+            case 4:
+                return controller = Resources.Load("Sprites/Entities/Players/Animations/Yellow/Animator_Player_Yellow") as RuntimeAnimatorController;
+            default:
+                return controller = Resources.Load("Sprites/Entities/Players/Animations/Red/Animator_Player_Red") as RuntimeAnimatorController;
+        }
+
+    }
 }
