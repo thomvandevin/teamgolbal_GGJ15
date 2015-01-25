@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using GamepadInput;
+using System;
 
 public class Entity : MonoBehaviour {
 
@@ -13,7 +14,9 @@ public class Entity : MonoBehaviour {
     }
     protected Facing Direction;
 
-	//public fields
+    protected Action OnDamage;
+
+    //public fields
     protected int MaxHealth;
     [HideInInspector]
     public int Health { get; private set; }
@@ -21,11 +24,12 @@ public class Entity : MonoBehaviour {
     public bool IsDead { get; private set; }
 
     protected bool CanMove;
-	
-	//private fields
+
+    //private fields
     protected Vector2 move, maxVelocity, maxKnockback;
-	
-	//public methods
+    private bool playerControl;
+
+    //public methods
     public void KnockBack(Vector3 source, float multiplier) {
         Vector2 hitDirection = gameObject.transform.position - source;
         hitDirection.Normalize();
@@ -39,25 +43,41 @@ public class Entity : MonoBehaviour {
     public void Damage(GameObject source, int damageValue) {
         Health -= damageValue;
         KnockBack(source.transform.position, 1);
+        if (Health <= 0)
+            Death();
     }
 
     public void Damage(GameObject source, int damageValue, float damageMultiplier) {
         Health -= Mathf.RoundToInt(damageValue * damageMultiplier);
         KnockBack(source.transform.position, damageMultiplier);
+        if (Health <= 0)
+            Death();
+    }
+
+    private void Hit() {
+    }
+
+    private void Death() {
+        
     }
 
     protected void UpdateMove(Vector2 directions) {
-        move = directions;
+        if (playerControl) {
+            move = directions;
+        }
     }
 
-	//private methods
+    //private methods
     protected void Awake() {
         move = Vector2.zero;
         IsDead = false;
         CanMove = true;
+        playerControl = true;
+        OnDamage = Hit;
     }
 
     protected void FixedMovement() {
+
         if (!CanMove)
             CanMove = true;
 
@@ -68,6 +88,8 @@ public class Entity : MonoBehaviour {
             Flip();
         else if (move.x > 0 && Direction == Facing.Right)
             Flip();
+
+
     }
 
     private void Flip() {
@@ -80,5 +102,5 @@ public class Entity : MonoBehaviour {
         playerScale.x *= -1;
         transform.localScale = playerScale;
     }
-	
+
 }
