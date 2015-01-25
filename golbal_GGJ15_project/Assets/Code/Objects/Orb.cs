@@ -16,6 +16,7 @@ public class Orb : MonoBehaviour {
     private CircleCollider2D collider;
     
     private bool isFalling;
+    private Vector2 previousPosition;
 
     //public methods
     public void Attach(Transform target, GamePad.Index playerIndex) {
@@ -32,16 +33,17 @@ public class Orb : MonoBehaviour {
 
     public void DeAttach() {
         GameObject target = new GameObject();
-        target.transform.position = Target.transform.position - new Vector3(0, 1, 0);
+        target.transform.position = Target.transform.position - new Vector3(2, 1, 0);
         Target = target.transform;
         GetComponent<ResponsiveSortingLayer>().OverrideLayer = false;
         collider.enabled = true;
         Invoke("NoTarget", .1f);
         Destroy(target);
-        rigidbody2D.AddForce(new Vector2(Random.Range(-400, 400), Random.Range(-400, 400)));
+        Vector2 hitDirection = new Vector2(transform.position.x, transform.position.y) - previousPosition;
+        rigidbody2D.AddForce(hitDirection.normalized);
 
         if (GameObject.FindGameObjectWithTag("End") != null) {
-            if (Vector2.Distance(transform.position, GameObject.FindGameObjectWithTag("End").transform.position) <= 32) {
+            if (Vector2.Distance(transform.position, GameObject.FindGameObjectWithTag("End").transform.position) <= 1) {
                 print("you're done");
             }
         }
@@ -68,10 +70,13 @@ public class Orb : MonoBehaviour {
             if (updateSortingLayer)
                 UpdateSortingLayer();
         }
-        if (isFalling)
-        {
+        if (isFalling){
             isFalling = !rigidbody2D.IsSleeping();
         }
+    }
+
+    private void LateUpdate() {
+        previousPosition = transform.position;
     }
 
     private void Move() {

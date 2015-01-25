@@ -16,7 +16,7 @@ public class SortingLayerParent : MonoBehaviour {
 	//private methods
     private void Awake() {
         if (Target == null) {
-            Target = gameObject;
+            Target = gameObject.transform.parent.gameObject;
         }
         sortingLayer = GetComponent<ResponsiveSortingLayer>();
         sortingLayer.OverrideLayer = true;

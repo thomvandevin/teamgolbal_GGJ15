@@ -22,12 +22,12 @@ public class TrapBehaviour : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.tag == "player" && !triggered)
+        if (coll.tag == "PlayerFeet" && !triggered)
         {
             int dealtDamage = Random.Range(minDamage, maxDamage);
-            coll.GetComponent<Character>().Damage(gameObject, dealtDamage);
+            coll.transform.parent.GetComponent<Character>().Damage(gameObject, dealtDamage);
 
-            ActivateTrap();
+            StartCoroutine(ActivateTrap());
         }
     }
 

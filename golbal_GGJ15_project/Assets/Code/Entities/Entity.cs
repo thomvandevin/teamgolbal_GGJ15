@@ -29,6 +29,7 @@ public class Entity : MonoBehaviour {
     //private fields
     protected Vector2 move, maxVelocity, maxKnockback;
     private bool playerControl;
+    private Vector2 previousPosition;
 
     //public methods
     public void KnockBack(Vector3 source, float multiplier) {
@@ -77,6 +78,10 @@ public class Entity : MonoBehaviour {
         CanMove = true;
         playerControl = true;
         OnDamage = Hit;
+    }
+
+    private void LateUpdate() {
+        previousPosition = transform.position;
     }
 
     protected void FixedMovement() {
