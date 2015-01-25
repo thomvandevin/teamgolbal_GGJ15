@@ -55,6 +55,16 @@ public class Character : Entity {
     }
 
     private void Update() {
+        //Vector2 camSize = new Vector2(camera.orthographicSize * Screen.width / Screen.height, camera.orthographicSize);
+        //if (transform.position.x < camSize.x || transform.position.y < camSize.y)
+        //{
+        //    if (transform.position.x > 1920 || transform.position.y > 1080)
+        //        CanMove = false;
+        //}
+        //else
+        //{
+        //    CanMove = !isDead;
+        //}
         if (CanMove) {
             if (GamePad.GetButtonDown(GamePad.Button.A, gamePadIndex)) {
                 Attack();

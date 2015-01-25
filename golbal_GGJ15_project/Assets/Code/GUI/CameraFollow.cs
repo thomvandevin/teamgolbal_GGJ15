@@ -39,13 +39,18 @@ public class CameraFollow : MonoBehaviour
 
     private void UpdateTrackPoint() {
         Vector2 newPoint = Vector2.zero;
+        float distances = 0;
         foreach (Transform t in registeredPlayers) {
             newPoint += new Vector2(t.position.x, t.position.y);
         }
         newPoint /= registeredPlayers.Count;
         trackPoint = newPoint;
-
-        trackPoint.z = newPoint.magnitude / 1080;
+        foreach (Transform p in registeredPlayers)
+        {
+            distances += Vector2.Distance(newPoint, p.position);
+        }
+        distances /= 4;
+        trackPoint.z = distances / 1080;
     }
 
 
