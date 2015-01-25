@@ -35,6 +35,7 @@ public class Character : Entity {
         animator = GetComponent<Animator>();
         currentAnimation = "";
         alreadyAnimating = false;
+        OnDamage = Hit;
 
         punchCollider = transform.FindChild("r_punchCollider").GetComponent<BoxCollider2D>();
         transform.FindChild("r_punchCollider").gameObject.layer = gameObject.layer;
@@ -45,16 +46,6 @@ public class Character : Entity {
             FixedMovement();
             Vector2 axisValues = GamePad.GetAxis(GamePad.Axis.LeftStick, gamePadIndex);
             UpdateMove(axisValues);
-            if (!alreadyAnimating) {
-                if (axisValues != Vector2.zero) {
-                    SetAnimation("Run");
-                } else {
-                    SetAnimation("Idle");
-                    if (isHoldingObject) {
-                        SetAnimationBool("holdingObject", true);
-                    }
-                }
-            }
         }
     }
 
@@ -63,7 +54,23 @@ public class Character : Entity {
             if (GamePad.GetButtonDown(GamePad.Button.A, gamePadIndex)) {
                 Attack();
             }
+
+            if (isHoldingObject) {
+                SetAnimationBool("holdingObject", true);
+            }
+
+            if (!alreadyAnimating) {
+                Vector2 axisValues = GamePad.GetAxis(GamePad.Axis.LeftStick, gamePadIndex);
+                if (axisValues != Vector2.zero) {
+                    SetAnimation("Run");
+                } else {
+                    SetAnimation("Idle");
+
+                }
+            }
         }
+
+        print(isHoldingObject);
 
         if (alreadyAnimating && animator.GetCurrentAnimatorStateInfo(0).IsName(currentAnimation)) {
             alreadyAnimating = false;
@@ -80,7 +87,7 @@ public class Character : Entity {
                 }
             }
         } else {
-            DropObject(holdingObject);
+            DropObject();
             SetAnimationBool("holdingObject", false);
             return;
         }
@@ -110,10 +117,17 @@ public class Character : Entity {
         isHoldingObject = true;
     }
 
-    private void DropObject(GameObject o) {
-        o.GetComponent<Orb>().DeAttach();
-        holdingObject = null;
+    private void DropObject() {
         isHoldingObject = false;
+        holdingObject.GetComponent<Orb>().DeAttach();
+        holdingObject = null;
+    }
+
+    private void Hit() {
+        if (isHoldingObject) {
+            DropObject();
+            SetAnimationBool("holdingObject", false);
+        }
     }
 
     private void SetAnimation(string animation) {

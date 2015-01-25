@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using GamepadInput;
+using System;
 
 public class Entity : MonoBehaviour {
 
@@ -12,6 +13,8 @@ public class Entity : MonoBehaviour {
         Down
     }
     protected Facing Direction;
+
+    protected Action OnDamage;
 
     //public fields
     protected int MaxHealth;
@@ -40,11 +43,22 @@ public class Entity : MonoBehaviour {
     public void Damage(GameObject source, int damageValue) {
         Health -= damageValue;
         KnockBack(source.transform.position, 1);
+        if (Health <= 0)
+            Death();
     }
 
     public void Damage(GameObject source, int damageValue, float damageMultiplier) {
         Health -= Mathf.RoundToInt(damageValue * damageMultiplier);
         KnockBack(source.transform.position, damageMultiplier);
+        if (Health <= 0)
+            Death();
+    }
+
+    private void Hit() {
+    }
+
+    private void Death() {
+        
     }
 
     protected void UpdateMove(Vector2 directions) {
@@ -59,6 +73,7 @@ public class Entity : MonoBehaviour {
         IsDead = false;
         CanMove = true;
         playerControl = true;
+        OnDamage = Hit;
     }
 
     protected void FixedMovement() {
