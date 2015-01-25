@@ -35,7 +35,7 @@ public class HUDManager : MonoBehaviour
         {
             _characterPortraits.Add(GameObject.Instantiate(Resources.Load("Prefabs/UI/t_CharacterPortrait"), _canvas.transform.position, Quaternion.identity) as GameObject);
         }
-
+        Character player;
         for (int i = 0; i < _characterPortraits.Count; i++)
         {
             if (_characterPortraits[i].GetComponent<Image>() != null)
@@ -64,7 +64,11 @@ public class HUDManager : MonoBehaviour
                     _characterPortraits[i].GetComponent<Image>().transform.position = new Vector3((190 - (128 * i)) + (256 * i), 64, 0);
 
                 //_characterPortraits[i].GetComponentInChildren<Text>().transform.position = new Vector3(0, 96, 0);
-                _characterPortraits[i].GetComponentInChildren<Text>().text = "100%";
+                //_characterPortraits[i].GetComponentInChildren<Text>().text = "100%";
+
+                // player = PlayerController.Get().players[i].GetComponent<Character>();
+                //player.healthBar = _characterPortraits[i].transform.Find("t_CharacterHPBar_FG").GetComponent<Image>();
+                //print(player.healthBar);
             }
         }
     }
@@ -72,5 +76,15 @@ public class HUDManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        for (int i = 0; i < PlayerController.Get().players.Count; i++)
+        {
+            Character character = PlayerController.Get().players[i].GetComponent<Character>();
+            Image[] listImages = _characterPortraits[i].gameObject.GetComponentsInChildren<Image>();
+            foreach (Image img in listImages)
+            {
+                if (img.name == "t_CharacterHPBar_FG")
+                    character.healthBar = img;
+            }
+        }
     }
 }

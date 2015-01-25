@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using GamepadInput;
+using UnityEngine.UI;
 
 public class Character : Entity
 {
@@ -20,6 +21,8 @@ public class Character : Entity
     private string currentAnimation;
     private bool alreadyAnimating;
 
+    public Image healthBar;
+
     private void Awake()
     {
         base.Awake();
@@ -34,6 +37,7 @@ public class Character : Entity
         Direction = Facing.Right;
         damageMultiplier = 1f;
         MaxHealth = 100;
+        Health = MaxHealth;
         maxVelocity = new Vector2(10, 7);
         maxKnockback = new Vector2(700, 700);
         isHoldingObject = false;
@@ -45,10 +49,14 @@ public class Character : Entity
 
         punchCollider = transform.FindChild("r_punchCollider").GetComponent<BoxCollider2D>();
         transform.FindChild("r_punchCollider").gameObject.layer = gameObject.layer;
+
+        healthBar = null;
     }
 
     private void FixedUpdate()
     {
+        if (IsDead)
+            return;
         if (CanMove)
         {
             FixedMovement();
@@ -59,6 +67,7 @@ public class Character : Entity
 
     private void Update()
     {
+
         //Vector2 camSize = new Vector2(camera.orthographicSize * Screen.width / Screen.height, camera.orthographicSize);
         //if (transform.position.x < camSize.x || transform.position.y < camSize.y)
         //{
@@ -100,10 +109,21 @@ public class Character : Entity
         {
             alreadyAnimating = false;
         }
+
+        if (healthBar)
+            healthBar.rectTransform.sizeDelta = new Vector2(Health * 0.71f, 11);
+
+        if (IsDead && !animator.GetCurrentAnimatorStateInfo(0).IsName("Anim_Player_Blue_Death"))
+        {
+            SetAnimation("Death");
+            return;
+        }
     }
 
     private void Attack()
     {
+        if (IsDead)
+            return;
         if (!isHoldingObject)
         {
             foreach (GameObject o in (ObjectController.Get().objects))
@@ -149,6 +169,8 @@ public class Character : Entity
 
     private void PickUpObject(GameObject o)
     {
+        if (IsDead)
+            return;
         if (!isHoldingObject)
         {
             o.GetComponent<Orb>().Attach(gameObject.transform, gamePadIndex);
@@ -193,9 +215,11 @@ public class Character : Entity
         animator.SetBool(animation, value);
     }
 
-    private RuntimeAnimatorController GetCharacterAnimator(int playerIndex) {
+    private RuntimeAnimatorController GetCharacterAnimator(int playerIndex)
+    {
         RuntimeAnimatorController controller;
-        switch (playerIndex) {
+        switch (playerIndex)
+        {
             case 1:
                 return controller = Resources.Load("Sprites/Entities/Players/Animations/Red/Animator_Player_Red") as RuntimeAnimatorController;
             case 2:

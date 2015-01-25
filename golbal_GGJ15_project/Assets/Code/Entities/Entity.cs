@@ -19,7 +19,7 @@ public class Entity : MonoBehaviour {
     //public fields
     protected int MaxHealth;
     [HideInInspector]
-    public int Health { get; private set; }
+    public int Health { get;  set; }
     [HideInInspector]
     public bool IsDead { get; private set; }
 
@@ -62,7 +62,7 @@ public class Entity : MonoBehaviour {
     }
 
     private void Death() {
-        
+        IsDead = true;
     }
 
     protected void UpdateMove(Vector2 directions) {
