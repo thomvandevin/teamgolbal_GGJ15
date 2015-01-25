@@ -66,6 +66,7 @@
      <Compile Include="Assets\Code\Level Related\MissionCreater.cs" />
      <Compile Include="Assets\Code\Level Related\MushroomJump.cs" />
      <Compile Include="Assets\Code\Level Related\RoomLoader.cs" />
+     <Compile Include="Assets\Code\Level Related\TrapBehaviour.cs" />
      <Compile Include="Assets\Code\Level Related\TrapPlacer.cs" />
      <Compile Include="Assets\Code\Managers\Bezier.cs" />
      <Compile Include="Assets\Code\Managers\EnemyContainer.cs" />
