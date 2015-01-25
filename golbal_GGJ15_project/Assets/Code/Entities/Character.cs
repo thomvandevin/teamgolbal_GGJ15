@@ -33,6 +33,7 @@ public class Character : Entity
         int playerIndexInt = PlayerController.Get().players.IndexOf(gameObject) + 1;
         gamePadIndex = GamePad.GetIndexFromInt(playerIndexInt);
         gameObject.layer = 7 + playerIndexInt;
+        gameObject.transform.FindChild("r_feet").gameObject.layer = gameObject.layer;
         gameObject.name = "Player " + playerIndexInt;
         Direction = Facing.Right;
         damageMultiplier = 1f;

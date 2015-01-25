@@ -23,7 +23,7 @@ public class Entity : MonoBehaviour {
     [HideInInspector]
     public bool IsDead { get; private set; }
 
-    protected bool CanMove;
+    public bool CanMove;
     protected bool isHoldingObject;
 
     //private fields
