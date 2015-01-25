@@ -6,9 +6,9 @@ public class Character : Entity {
 
     public GameObject holdingObject { get; private set; }
 
-    public int AdditiveSpeed { get; set { maxVelocity *= AdditiveSpeed; } }
-    public int AdditiveHealth { get; set { MaxHealth += AdditiveHealth; } }
-    public int AdditiveAttack { get; set { damageMultiplier = AdditiveAttack; } }
+    public int AdditiveSpeed { get { return AdditiveSpeed; } set { maxVelocity *= AdditiveSpeed; } }
+    public int AdditiveHealth { get { return AdditiveHealth; } set { MaxHealth += AdditiveHealth; } }
+    public int AdditiveAttack { get { return AdditiveAttack; } set { damageMultiplier = AdditiveAttack; } }
 
     private ColorFlash colorFlash;
     private GamePad.Index gamePadIndex;
