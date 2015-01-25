@@ -21,8 +21,6 @@ public class EnemyPlacer : MonoBehaviour {
 
         foreach (Transform child in levelPrefab.transform)
         {
-            Debug.Log(levelPrefab.transform.position);
-
             if (child.tag == "enemySpawner")
             {
                 Vector3 spawnPosition = child.position;

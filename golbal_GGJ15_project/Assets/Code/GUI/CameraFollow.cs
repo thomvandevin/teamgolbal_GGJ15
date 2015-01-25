@@ -44,6 +44,8 @@ public class CameraFollow : MonoBehaviour
         }
         newPoint /= registeredPlayers.Count;
         trackPoint = newPoint;
+
+        trackPoint.z = newPoint.magnitude / 1080;
     }
 
 
@@ -76,5 +78,7 @@ public class CameraFollow : MonoBehaviour
 
 		// Set the camera's position to the target position with the same z component.
 		transform.position = new Vector3(targetX, targetY, transform.position.z);
+
+        _instance.camera.orthographicSize = Mathf.Clamp(trackPoint.z * 2000, 5, 15);
 	}
 }
