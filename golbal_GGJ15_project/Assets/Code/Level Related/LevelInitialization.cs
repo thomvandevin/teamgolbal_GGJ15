@@ -5,17 +5,13 @@ using System.Collections.Generic;
 public class LevelInitialization : MonoBehaviour {
 
     LevelData levelData;
-    DebuffManager debuffManager;
 
     List<GameObject> playerList;
 
     void Start()
     {
-        debuffManager = new DebuffManager();
-        debuffManager.Initialize();
-
         levelData = gameObject.AddComponent<LevelData>();        
-        levelData.Initialize(debuffManager);
+        levelData.Initialize();
 
         //playerList = new List<GameObject>();
         //InitializePlayers();

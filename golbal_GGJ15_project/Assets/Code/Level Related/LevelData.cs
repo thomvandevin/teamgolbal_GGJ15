@@ -28,9 +28,10 @@ public class LevelData : MonoBehaviour {
 
     public bool _pvpEnable { get { return pvpEnabled; } set { pvpEnabled = value; } }
 
-    public void Initialize(DebuffManager debuffManager)
+    public void Initialize()
     {
-        this.debuffManager = debuffManager;
+        debuffManager = new DebuffManager();
+        debuffManager.Initialize();
 
         roomLoader = new RoomLoader();
         roomLoader.Initialize();

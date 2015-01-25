@@ -55,7 +55,10 @@ public class IslandTemplate : MonoBehaviour {
 
     public void DeleteLevel()
     {
-        levelData._enemyList.Clear();
-        levelData._trapList.Clear();
+        if(levelData._enemyList != null)
+            levelData._enemyList.Clear();
+
+        if (levelData._trapList != null)
+            levelData._trapList.Clear();
     }
 }
