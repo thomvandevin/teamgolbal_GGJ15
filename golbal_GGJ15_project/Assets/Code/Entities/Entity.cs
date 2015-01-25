@@ -24,6 +24,7 @@ public class Entity : MonoBehaviour {
     public bool IsDead { get; private set; }
 
     protected bool CanMove;
+    protected bool isHoldingObject;
 
     //private fields
     protected Vector2 move, maxVelocity, maxKnockback;
@@ -35,14 +36,15 @@ public class Entity : MonoBehaviour {
         hitDirection.Normalize();
 
         CanMove = false;
-        Invoke("FixedMovement", .1f);
-        gameObject.rigidbody2D.AddForce(hitDirection * maxKnockback.x * multiplier);
-        iTween.PunchPosition(Camera.main.gameObject, -(hitDirection * maxKnockback.y * multiplier), .2f);
+        Invoke("FixedMovement", .3f);
+        gameObject.rigidbody2D.AddForce(hitDirection * maxKnockback.x * multiplier * UnityEngine.Random.Range(1,1.3f));
+        iTween.PunchPosition(Camera.main.gameObject, -(hitDirection * multiplier * UnityEngine.Random.Range(1, 1.3f)), .2f);
     }
 
     public void Damage(GameObject source, int damageValue) {
         Health -= damageValue;
         KnockBack(source.transform.position, 1);
+        Hit();
         if (Health <= 0)
             Death();
     }
@@ -50,6 +52,7 @@ public class Entity : MonoBehaviour {
     public void Damage(GameObject source, int damageValue, float damageMultiplier) {
         Health -= Mathf.RoundToInt(damageValue * damageMultiplier);
         KnockBack(source.transform.position, damageMultiplier);
+        Hit();
         if (Health <= 0)
             Death();
     }
@@ -81,8 +84,12 @@ public class Entity : MonoBehaviour {
         if (!CanMove)
             CanMove = true;
 
+
         move.Normalize();
+        if (!isHoldingObject)
         rigidbody2D.velocity = new Vector2(move.x * maxVelocity.x, move.y * maxVelocity.y);
+        else
+            rigidbody2D.velocity = new Vector2(move.x * maxVelocity.x/1.5f, move.y * maxVelocity.y/1.5f);
 
         if (move.x < 0 && Direction == Facing.Left)
             Flip();
