@@ -48,6 +48,8 @@ public class Orb : MonoBehaviour {
         if (GameObject.FindGameObjectWithTag("End") != null) {
             if (Vector2.Distance(transform.position, GameObject.FindGameObjectWithTag("End").transform.position) <= 1) {
                 print("you're done");
+                GameObject.Find("r_portal").GetComponent<Portal>().TurnOn();
+                GameObject.Find("r_portal").GetComponent<Portal>().Invoke("EndGame", 5f);
             }
         }
         //isFalling = true;
