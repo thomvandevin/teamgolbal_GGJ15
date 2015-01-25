@@ -146,7 +146,7 @@ public class LevelData : MonoBehaviour {
 
     public void SetPlayerMovement(GameObject playerObject, bool value)
     {
-        //playerObject.GetComponent<Character>(). = value;
+        playerObject.GetComponent<Character>().CanMove = value;
     }
 
     void PlaceMissionItems()

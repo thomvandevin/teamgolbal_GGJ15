@@ -49,6 +49,7 @@
      <Compile Include="Assets\Code\Core\GamePad.cs" />
      <Compile Include="Assets\Code\Core\iTween.cs" />
      <Compile Include="Assets\Code\Core\iTweenExtensions.cs" />
+     <Compile Include="Assets\Code\Entities\BulletBehaviour.cs" />
      <Compile Include="Assets\Code\Entities\Character.cs" />
      <Compile Include="Assets\Code\Entities\Enemy.cs" />
      <Compile Include="Assets\Code\Entities\EnemyBehaviour.cs" />
@@ -77,6 +78,7 @@
      <Compile Include="Assets\Code\Objects\Orb.cs" />
      <Compile Include="Assets\Code\Screens\Test.cs" />
      <Compile Include="Assets\Code\Shaders\ColorFlash.cs" />
+     <Compile Include="Assets\HealthBar.cs" />
      <None Include="Assets\Content\Resources\Data\Enemies.xml" />
      <None Include="Assets\Code\Shaders\Sprites-Diffuse.shader" />
  <Reference Include="UnityEngine.UI">

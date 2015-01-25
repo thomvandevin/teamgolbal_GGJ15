@@ -33,6 +33,7 @@ public class EnemyPlacer : MonoBehaviour {
         for (int i = 0; i < spawnPoints.Count; i++)
         {
             GameObject newEnemy = Instantiate(enemyPrefab, spawnPoints[i], Quaternion.identity) as GameObject;
+            newEnemy.GetComponent<EnemyBehaviour>().Initialize(levelData);
             enemyList.Add(newEnemy);
         }
 
