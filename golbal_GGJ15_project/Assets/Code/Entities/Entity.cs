@@ -24,6 +24,7 @@ public class Entity : MonoBehaviour {
     public bool IsDead { get; private set; }
 
     protected bool CanMove;
+    protected bool isHoldingObject;
 
     //private fields
     protected Vector2 move, maxVelocity, maxKnockback;
@@ -83,8 +84,12 @@ public class Entity : MonoBehaviour {
         if (!CanMove)
             CanMove = true;
 
+
         move.Normalize();
+        if (!isHoldingObject)
         rigidbody2D.velocity = new Vector2(move.x * maxVelocity.x, move.y * maxVelocity.y);
+        else
+            rigidbody2D.velocity = new Vector2(move.x * maxVelocity.x/1.5f, move.y * maxVelocity.y/1.5f);
 
         if (move.x < 0 && Direction == Facing.Left)
             Flip();
