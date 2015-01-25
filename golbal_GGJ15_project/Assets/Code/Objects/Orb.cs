@@ -11,12 +11,14 @@ public class Orb : MonoBehaviour {
     private Vector3 targetOffset;
     private SpriteRenderer shadow;
     private bool updateSortingLayer;
+    private CircleCollider2D collider;
 
     //public methods
     public void Attach(Transform target) {
         Target = target;
         shadow.enabled = false;
         GetComponent<ResponsiveSortingLayer>().OverrideLayer = true;
+        collider.enabled = false;
         Move();
     }
 
@@ -25,8 +27,10 @@ public class Orb : MonoBehaviour {
         target.transform.position = Target.transform.position - new Vector3(0, 1, 0);
         Target = target.transform;
         GetComponent<ResponsiveSortingLayer>().OverrideLayer = false;
+        collider.enabled = true;
         Invoke("NoTarget", .1f);
-        //rigidbody2D.AddForce(new Vector2(Random.Range(-40, 40), 30));
+        Destroy(target);
+        rigidbody2D.AddForce(new Vector2(Random.Range(-400, 400), Random.Range(-400, 400)));
 
         if (GameObject.FindGameObjectWithTag("End") != null) {
             if (Vector2.Distance(transform.position, GameObject.FindGameObjectWithTag("End").transform.position) <= 32) {
@@ -45,6 +49,7 @@ public class Orb : MonoBehaviour {
         animator = gameObject.GetComponent<Animator>();
         shadow = transform.FindChild("r_Shadow").GetComponent<SpriteRenderer>();
         ObjectController.Get().AddObject(gameObject);
+        collider = GetComponent<CircleCollider2D>();
         targetOffset = new Vector3(0, 1, 0);
     }
 

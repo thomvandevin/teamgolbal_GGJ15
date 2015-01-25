@@ -30,12 +30,12 @@ public class Character : Entity {
         damageMultiplier = 1f;
         MaxHealth = 100;
         maxVelocity = new Vector2(10, 7);
-        maxKnockback = new Vector2(1, 1);
+        maxKnockback = new Vector2(700, 700);
         isHoldingObject = false;
         animator = GetComponent<Animator>();
         currentAnimation = "";
         alreadyAnimating = false;
-        OnDamage = Hit;
+        OnDamage += Hit;
 
         punchCollider = transform.FindChild("r_punchCollider").GetComponent<BoxCollider2D>();
         transform.FindChild("r_punchCollider").gameObject.layer = gameObject.layer;
@@ -69,8 +69,6 @@ public class Character : Entity {
                 }
             }
         }
-
-        print(isHoldingObject);
 
         if (alreadyAnimating && animator.GetCurrentAnimatorStateInfo(0).IsName(currentAnimation)) {
             alreadyAnimating = false;
@@ -108,6 +106,7 @@ public class Character : Entity {
         if (isHoldingObject) {
             //dropobject
         }
+        OnDamage -= Hit;
         PlayerController.Get().RemovePlayer(gameObject);
     }
 
@@ -126,6 +125,7 @@ public class Character : Entity {
     private void Hit() {
         if (isHoldingObject) {
             DropObject();
+            print("test");
             SetAnimationBool("holdingObject", false);
         }
     }

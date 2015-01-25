@@ -73,6 +73,7 @@
      <Compile Include="Assets\Code\Managers\HUDManager.cs" />
      <Compile Include="Assets\Code\Objects\ObjectController.cs" />
      <Compile Include="Assets\Code\Objects\Orb.cs" />
+     <Compile Include="Assets\Code\Screens\Test.cs" />
      <Compile Include="Assets\Code\Shaders\ColorFlash.cs" />
      <None Include="Assets\Content\Resources\Data\Enemies.xml" />
      <None Include="Assets\Code\Shaders\Sprites-Diffuse.shader" />
