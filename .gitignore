@@ -61,3 +61,7 @@ $RECYCLE.BIN/
 *.sln
 *.suo
 *.sln
+*.csproj
+*.sln
+*.suo
+*.sln
