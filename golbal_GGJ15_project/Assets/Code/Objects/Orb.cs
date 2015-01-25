@@ -17,13 +17,24 @@ public class Orb : MonoBehaviour {
         Target = target;
         shadow.enabled = false;
         GetComponent<ResponsiveSortingLayer>().OverrideLayer = true;
+        Move();
     }
 
     public void DeAttach() {
+        transform.position = Target.transform.position;
         Target = null;
         shadow.enabled = true;
         GetComponent<ResponsiveSortingLayer>().OverrideLayer = false;
         //rigidbody2D.AddForce(new Vector2(Random.Range(-40, 40), 30));
+
+        GameObject altar = GameObject.FindGameObjectWithTag("End");
+        if (altar != null)
+        {
+            if (Vector2.Distance(transform.position, altar.transform.position) <= 32)
+            {
+                print("you're done");
+            }
+        }
     }
 	
 	//private methods
@@ -43,7 +54,7 @@ public class Orb : MonoBehaviour {
 
     private void Move(){
         if (Vector3.Distance(transform.position, Target.position) > .01f) {
-            Vector3 newPosition = Vector3.Lerp(transform.position, Target.position + targetOffset, Time.deltaTime * 30);
+            Vector3 newPosition = Vector3.Lerp(transform.position, Target.position + targetOffset, Time.deltaTime * 60);
             transform.position = newPosition;
         }
     }
