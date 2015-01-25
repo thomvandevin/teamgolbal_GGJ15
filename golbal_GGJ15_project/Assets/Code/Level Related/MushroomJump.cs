@@ -4,39 +4,25 @@ using System.Collections.Generic;
 
 public class MushroomJump : MonoBehaviour {
 
+    LevelData levelData;
+
     List<GameObject> playersList;
+    bool[] playersLanded;
 
     GameObject startPosition, endPosition;
 
-    void Start()
+    int numberPlayersLanded;
+    
+    public void Initialize(LevelData levelData, List<GameObject> playersList, GameObject startPosition, GameObject endPosition)
     {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("trapSpawner");
-
-        List<GameObject> newList = new List<GameObject>();
-
-        for (int i = 0; i < players.Length; i++)
-        {
-            newList.Add(players[i]);
-        }
-
-        GameObject startObject = GameObject.Find("Mushroom");
-        GameObject endObject = GameObject.Find("LandPad");
-
-        Initialize(newList, startObject, endObject);
-    }
-
-    public void Initialize(List<GameObject> playersList, GameObject startPosition, GameObject endPosition)
-    {
+        this.levelData = levelData;
         this.playersList = playersList;
         this.startPosition = startPosition;
         this.endPosition = endPosition;
 
-        MoveObjects();
-    }
+        playersLanded = new bool[playersList.Count];
 
-    void SetPlayers(GameObject playerObject, bool value)
-    {
-        //playerObject.GetComponent<Character>().moveAble = value;
+        MoveObjects();
     }
 
     void MoveObjects()
@@ -49,12 +35,12 @@ public class MushroomJump : MonoBehaviour {
 
     IEnumerator MoveToMushroom(GameObject movedObject)
     {
-        SetPlayers(movedObject, false);
+        levelData.SetPlayerMovement(movedObject, false);
 
         Vector3 lerpStart = movedObject.transform.position;
 
         float timer = 0f;
-        float lerpTime = 0.5f + (Vector3.Distance(lerpStart, startPosition.transform.position));
+        float lerpTime = 0.5f + ((Vector3.Distance(lerpStart, startPosition.transform.position)) / 15f);
 
         while(true)
         {
@@ -78,8 +64,8 @@ public class MushroomJump : MonoBehaviour {
     {
         Vector3 lerpStart = movedObject.transform.position;
 
-        Vector3 handleA = new Vector3((endPosition.transform.position.x - startPosition.transform.position.x) / 4f, startPosition.transform.position.y + 10);
-        Vector3 handleB = new Vector3((endPosition.transform.position.x - startPosition.transform.position.x) / 4f * 3, endPosition.transform.position.y + 10);
+        Vector3 handleA = new Vector3(startPosition.transform.position.x + ((endPosition.transform.position.x - startPosition.transform.position.x)), startPosition.transform.position.y + 10);
+        Vector3 handleB = new Vector3(startPosition.transform.position.x + ((endPosition.transform.position.x - startPosition.transform.position.x)), endPosition.transform.position.y + 10);
 
         float timer = 0f;
         float lerpTime = 3f;
@@ -98,7 +84,16 @@ public class MushroomJump : MonoBehaviour {
         }
 
         movedObject.transform.position = endPosition.transform.position;
+        SetLanded();
+    }
 
-        SetPlayers(movedObject, true);
+    void SetLanded()
+    {
+        numberPlayersLanded++;
+
+        if (numberPlayersLanded >= playersLanded.Length)
+        {
+            levelData.StartLevel();
+        }
     }
 }

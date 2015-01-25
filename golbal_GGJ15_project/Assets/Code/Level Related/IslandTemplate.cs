@@ -14,7 +14,13 @@ public class IslandTemplate : MonoBehaviour {
     GameObject islandPrefab;
     GameObject islandObject;
 
+    GameObject mushroom;
+    GameObject landingSpot;
+
     Vector2 islandPosition;
+
+    public GameObject _mushroom { get { return mushroom; } }
+    public GameObject _landingSpot { get { return landingSpot; } }
 
     public void Initialize(LevelSelection levelSelection, LevelData levelData, GameObject islandObject, Vector2 islandPosition)
     {
@@ -35,6 +41,11 @@ public class IslandTemplate : MonoBehaviour {
         trapPlacer.Initialize(levelData);
 
         islandObject = Instantiate(islandPrefab, islandPosition, Quaternion.identity) as GameObject;
+
+        if (levelSelection != LevelSelection.End)
+            mushroom = islandObject.transform.FindChild("mushroom_pad").gameObject;
+
+        landingSpot = islandObject.transform.FindChild("landing_pad").gameObject;
     }
 
     public void StartCreatures()
@@ -51,14 +62,5 @@ public class IslandTemplate : MonoBehaviour {
     public void StartOrb()
     {
         // Place the final orb
-    }
-
-    public void DeleteLevel()
-    {
-        if(levelData._enemyList != null)
-            levelData._enemyList.Clear();
-
-        if (levelData._trapList != null)
-            levelData._trapList.Clear();
     }
 }

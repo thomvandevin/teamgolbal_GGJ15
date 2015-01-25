@@ -13,13 +13,14 @@ public class LevelInitialization : MonoBehaviour {
         levelData = gameObject.AddComponent<LevelData>();        
         levelData.Initialize();
 
-        //playerList = new List<GameObject>();
-        //InitializePlayers();
+        InitializePlayers();
     }
 
     void InitializePlayers()
     {
-        GameObject basePlayer = Resources.Load("Prefabs/Entities/r_playerBase") as GameObject;
+        GameObject basePlayer = Resources.Load("Prefabs/Entities/prefab_tempPlayer") as GameObject;
+
+        playerList = new List<GameObject>();
 
         for (int i = 0; i < 4; i++)
         {
@@ -28,5 +29,6 @@ public class LevelInitialization : MonoBehaviour {
         }
 
         levelData._playerList = playerList;
+        levelData.SetLevel();
     }
 }

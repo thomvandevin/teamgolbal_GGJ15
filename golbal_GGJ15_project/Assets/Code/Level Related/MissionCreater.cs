@@ -24,14 +24,14 @@ public class MissionCreater : MonoBehaviour {
     {
         if (numberOfLevels < 5)
         {
-            int randomValue = Random.Range(1, 101);
+            //int randomValue = Random.Range(1, 101);
 
-            if (randomValue <= mission_Suicide)
-                missions = Missions.CommitSuicide;
-            else
-                if (randomValue <= mission_KillPlayer)
-                    missions = Missions.KillPlayer;
-                else
+            //if (randomValue <= mission_Suicide)
+            //    missions = Missions.CommitSuicide;
+            //else
+            //    if (randomValue <= mission_KillPlayer)
+            //        missions = Missions.KillPlayer;
+            //    else
                     missions = Missions.KillCreatures;
         }
         else

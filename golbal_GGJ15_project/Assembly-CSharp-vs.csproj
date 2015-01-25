@@ -49,12 +49,12 @@
      <Compile Include="Assets\Code\Core\GamePad.cs" />
      <Compile Include="Assets\Code\Core\iTween.cs" />
      <Compile Include="Assets\Code\Core\iTweenExtensions.cs" />
-     <Compile Include="Assets\Code\DebuffManager.cs" />
      <Compile Include="Assets\Code\Entities\Character.cs" />
      <Compile Include="Assets\Code\Entities\Enemy.cs" />
      <Compile Include="Assets\Code\Entities\EnemyBehaviour.cs" />
      <Compile Include="Assets\Code\Entities\Entity.cs" />
      <Compile Include="Assets\Code\Entities\PlayerController.cs" />
+     <Compile Include="Assets\Code\Entities\TestEnemy.cs" />
      <Compile Include="Assets\Code\GUI\CameraFollow.cs" />
      <Compile Include="Assets\Code\GUI\ResponsiveSortingLayer.cs" />
      <Compile Include="Assets\Code\GUI\ScreenFlash.cs" />

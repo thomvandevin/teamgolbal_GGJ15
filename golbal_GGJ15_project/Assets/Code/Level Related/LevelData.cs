@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public class LevelData : MonoBehaviour {
 
     RoomLoader roomLoader;    
-    DebuffManager debuffManager;
 
     MissionCreater.Missions currentMission;
 
@@ -30,14 +29,10 @@ public class LevelData : MonoBehaviour {
 
     public void Initialize()
     {
-        debuffManager = new DebuffManager();
-        debuffManager.Initialize();
-
         roomLoader = new RoomLoader();
         roomLoader.Initialize();
 
-        SetIslands();
-        SetLevel();
+        SetIslands();        
     }
 
     void SetIslands()
@@ -59,40 +54,43 @@ public class LevelData : MonoBehaviour {
             if (i != 4)
             {
                 islandList.Add(new IslandTemplate());
-                islandList[i].Initialize(IslandTemplate.LevelSelection.Random, this, roomList[i], new Vector2(64 * i, 30 * i));
+                islandList[i].Initialize(IslandTemplate.LevelSelection.Random, this, roomList[i], new Vector2(64 * i, -30 * i));
             }
             else
             {
                 islandList.Add(new IslandTemplate());
-                islandList[i].Initialize(IslandTemplate.LevelSelection.End, this, roomList[i], new Vector2(64 * i, 30 * i));
+                islandList[i].Initialize(IslandTemplate.LevelSelection.End, this, roomList[i], new Vector2(64 * i, -30 * i));
             }
         }
     }
 
-    void SetLevel()
+    public void SetLevel()
     {
-        PlaceMissionItems();
-
         if (islandList.Count == 1)
             currentMission = MissionCreater.Missions.PlaceOrb;
         else
             CreateMission();
+
+        PlaceMissionItems();
     }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
-            SetNextLevel();
+        {
+            GameObject enemy = GameObject.Find("r_enemy(Clone)");
+            enemy.GetComponent<TestEnemy>().EnemyKilled();
+        }
     }
 
     void SetNextLevel()
     {
-        islandList[0].DeleteLevel();
-
         if (islandList.Count > 1)
         {
             islandList.RemoveAt(0);
             roomList.RemoveAt(0);
+
+            Debug.Log(islandList.Count);
 
             SetLevel();
         }
@@ -102,6 +100,27 @@ public class LevelData : MonoBehaviour {
     {
         MissionCreater missionCreater = new MissionCreater();
         currentMission = missionCreater.CreateMission();
+    }
+
+    void JumpToNext()
+    {
+        MushroomJump mushroomJump = Camera.main.gameObject.AddComponent<MushroomJump>();
+        mushroomJump.Initialize(this, playerList, islandList[0]._mushroom, islandList[1]._landingSpot);
+    }
+
+    public void StartLevel()
+    {
+        for (int i = 0; i < playerList.Count; i++)
+            SetPlayerMovement(playerList[i], true);
+
+        Destroy(Camera.main.gameObject.GetComponent<MushroomJump>());
+
+        SetNextLevel();
+    }
+
+    public void SetPlayerMovement(GameObject playerObject, bool value)
+    {
+        // playerObject.GetComponent<Character>().moveAble = value;
     }
 
     void PlaceMissionItems()
@@ -159,7 +178,7 @@ public class LevelData : MonoBehaviour {
             {
                 if (enemyList.Count == 0)
                 {
-                    // The players have won the mission
+                    JumpToNext();
                 }
             }
         }
