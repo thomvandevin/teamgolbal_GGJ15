@@ -2,7 +2,7 @@
 using System.Collections;
 using GamepadInput;
 
-public class Character : Entity{
+public class Character : Entity {
 
     public GameObject holdingObject { get; private set; }
 
@@ -13,9 +13,10 @@ public class Character : Entity{
     private bool isHoldingObject;
     private BoxCollider2D punchCollider;
     private Animator animator;
+    private string currentAnimation;
+    private bool alreadyAnimating;
 
-	private void Awake () 
-    {
+    private void Awake() {
         base.Awake();
 
         CameraFollow.Get().Register(gameObject.transform);
@@ -32,16 +33,28 @@ public class Character : Entity{
         maxKnockback = new Vector2(1, 1);
         isHoldingObject = false;
         animator = GetComponent<Animator>();
+        currentAnimation = "";
+        alreadyAnimating = false;
 
         punchCollider = transform.FindChild("r_punchCollider").GetComponent<BoxCollider2D>();
         transform.FindChild("r_punchCollider").gameObject.layer = gameObject.layer;
-	}
+    }
 
     private void FixedUpdate() {
         if (CanMove) {
             FixedMovement();
-
-            UpdateMove(GamePad.GetAxis(GamePad.Axis.LeftStick, gamePadIndex));
+            Vector2 axisValues = GamePad.GetAxis(GamePad.Axis.LeftStick, gamePadIndex);
+            UpdateMove(axisValues);
+            if (!alreadyAnimating) {
+                if (axisValues != Vector2.zero) {
+                    SetAnimation("Run");
+                } else {
+                    SetAnimation("Idle");
+                    if (isHoldingObject) {
+                        SetAnimationBool("holdingObject", true);
+                    }
+                }
+            }
         }
     }
 
@@ -51,6 +64,10 @@ public class Character : Entity{
                 Attack();
             }
         }
+
+        if (alreadyAnimating && animator.GetCurrentAnimatorStateInfo(0).IsName(currentAnimation)) {
+            alreadyAnimating = false;
+        }
     }
 
     private void Attack() {
@@ -58,11 +75,13 @@ public class Character : Entity{
             foreach (GameObject o in (ObjectController.Get().objects)) {
                 if (o.GetComponent<CircleCollider2D>().bounds.Intersects(GetComponent<BoxCollider2D>().bounds)) {
                     PickUpObject(o);
+                    SetAnimationBool("holdingObject", true);
                     return;
                 }
             }
         } else {
             DropObject(holdingObject);
+            SetAnimationBool("holdingObject", false);
             return;
         }
 
@@ -70,7 +89,12 @@ public class Character : Entity{
             if (p.GetComponent<BoxCollider2D>().bounds.Intersects(punchCollider.bounds) && p != gameObject) {
                 p.GetComponent<Character>().Damage(gameObject, Random.Range(10, 13));
             }
-        }        
+        }
+
+        if (!alreadyAnimating) {
+            SetAnimation("Attack");
+            //alreadyAnimating = true;
+        }
     }
 
     private void OnDestroy() {
@@ -93,7 +117,12 @@ public class Character : Entity{
     }
 
     private void SetAnimation(string animation) {
+        currentAnimation = animation;
+        animator.SetTrigger(animation);
+    }
 
+    private void SetAnimationBool(string animation, bool value) {
+        animator.SetBool(animation, value);
     }
 
 }
