@@ -104,8 +104,8 @@ public class LevelData : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            GameObject enemy = GameObject.Find("r_enemy(Clone)");
-            enemy.GetComponent<TestEnemy>().EnemyKilled();
+            GameObject enemy = GameObject.Find("Enemy_Skeleton(Clone)");
+            Enemy_Killed(enemy);
         }
     }
 
@@ -146,7 +146,7 @@ public class LevelData : MonoBehaviour {
 
     public void SetPlayerMovement(GameObject playerObject, bool value)
     {
-        // playerObject.GetComponent<Character>().moveAble = value;
+        //playerObject.GetComponent<Character>(). = value;
     }
 
     void PlaceMissionItems()
