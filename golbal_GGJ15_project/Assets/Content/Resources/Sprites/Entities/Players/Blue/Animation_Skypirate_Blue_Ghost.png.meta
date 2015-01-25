@@ -1,11 +1,8 @@
 fileFormatVersion: 2
-guid: 53d7742848795cc4cb675c44b17f6d5f
+guid: 277ef3129f3e78443821fe08b48e623e
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Animation_Skypirate_Run_Right_0
-    21300002: Animation_Skypirate_Run_Right_1
-    21300004: Animation_Skypirate_Run_Right_2
-    21300006: Animation_Skypirate_Run_Right_3
+    21300000: Animation_Skypirate_Blue_Ghost_0
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -47,40 +44,10 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: Animation_Skypirate_Run_Right_0
+    - name: Animation_Skypirate_Blue_Ghost_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Animation_Skypirate_Run_Right_1
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Animation_Skypirate_Run_Right_2
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Animation_Skypirate_Run_Right_3
-      rect:
-        serializedVersion: 2
-        x: 96
         y: 0
         width: 32
         height: 32
